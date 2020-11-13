@@ -16,7 +16,7 @@
         class="requestRow"
         slot="md-table-row"
         v-for="item in rentList"
-        v-if="item.rent_status == 1"
+        :key="item.rent_index"
       >
         <md-table-cell>{{ item.rent_user_name }}</md-table-cell>
         <md-table-cell>{{ item.rent_product_name }}</md-table-cell>
@@ -38,7 +38,9 @@
       </md-table-row>
 
       <md-table-row v-if="rentRequestNum == 0">
-        <md-table-cell>{{ englishSwitch ? "No Rent request." : "대여 신청이 없습니다." }}</md-table-cell>
+        <md-table-cell>{{
+          englishSwitch ? "No Rent request." : "대여 신청이 없습니다."
+        }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -94,10 +96,11 @@ export default {
           console.log(response.data);
           vue.rentList = [];
           for (var x = 0; x < Object.keys(response.data.rents).length; x++) {
-            vue.rentList.push(response.data.rents[x]);
-            response.data.rents[x].rent_status == 1 ? vue.rentRequestNum++ : 0;
+            if (response.data.rents[x].rent_status == 1) {
+              vue.rentList.push(response.data.rents[x]);
+              vue.rentRequestNum++;
+            }
           }
-          console.log(vue.rentRequestNum);
         })
         .catch(function (error) {
           console.log(error);

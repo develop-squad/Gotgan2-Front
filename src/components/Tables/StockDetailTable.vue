@@ -26,8 +26,9 @@
           }}</span>
         </div>
       </md-list-item>
+
       <md-content class="md-scrollbar tableScrollDiv">
-        <md-list-item v-for="item in productGroup">
+        <md-list-item v-for="(item, index) in productGroup" :key="index">
           <div class="list-line" @click="toggle(item)">
             <span class="list-item">{{ item.group_name }}</span>
             <span class="list-item">{{
@@ -66,7 +67,8 @@
             </md-table-row>
 
             <md-table-row
-              v-for="product in item.products"
+              v-for="(product, index) in item.products"
+              :key="index"
               @click="toggleDialog(product)"
             >
               <md-table-cell>{{ product.product_barcode }}</md-table-cell>
@@ -122,7 +124,7 @@
               }}</md-table-head>
             </md-table-row>
 
-            <md-table-row v-for="log in logList">
+            <md-table-row v-for="(log, index) in logList" :key="index">
               <md-table-cell>{{ log.time }}</md-table-cell>
               <md-table-cell>{{ log.type }}</md-table-cell>
               <md-table-cell>{{ log.userID }}</md-table-cell>
@@ -167,14 +169,12 @@ export default {
       dialogInfo: {},
       showTable: false,
       logList: [],
-      englishSwitch: false,
     };
   },
   components: {},
   created() {
     console.log("StockDetailTable");
     console.log(this._props);
-    this.englishSwitch = this._props.englishSwitch_Table;
     this.exportData();
   },
   methods: {

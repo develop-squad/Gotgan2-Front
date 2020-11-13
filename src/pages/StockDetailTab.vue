@@ -90,8 +90,9 @@
                             : "그룹 추가"
                         }}</md-option>
                         <md-option
-                          v-for="item in product_groups"
+                          v-for="(item, index) in product_groups"
                           v-bind:value="item.group_index"
+                          :key="index"
                         >
                           {{ item.group_name }}
                         </md-option>
@@ -144,8 +145,9 @@
                         :disabled="sending"
                       >
                         <md-option
-                          v-for="item in user_Groups"
+                          v-for="(item, index) in user_Groups"
                           v-bind:value="item.group_index"
+                          :key="index"
                         >
                           {{ item.group_name }}
                         </md-option>
@@ -260,7 +262,9 @@
 
               <md-tab
                 id="groupAddTab"
-                :md-label="this._props.englishSwitch_Tab ? 'Group Add' : '그룹 추가'"
+                :md-label="
+                  this._props.englishSwitch_Tab ? 'Group Add' : '그룹 추가'
+                "
               >
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-30 md-small-size-100">

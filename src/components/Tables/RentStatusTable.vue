@@ -23,7 +23,7 @@
         class="statusRow"
         slot="md-table-row"
         v-for="item in rentList"
-        v-if="item.rent_status == 2"
+        :key="item.rent_index"
       >
         <md-table-cell>{{ item.rent_user_name }}</md-table-cell>
         <md-table-cell>{{ item.rent_product_name }}</md-table-cell>
@@ -101,9 +101,12 @@ export default {
           vue.rentStatusNum = 0;
           vue.rentList = [];
           for (var x = 0; x < Object.keys(response.data.rents).length; x++) {
-            vue.rentList.push(response.data.rents[x]);
-            response.data.rents[x].rent_status == 2 ? vue.rentStatusNum++ : 0;
+            if (response.data.rents[x].rent_status == 2) {
+              vue.rentList.push(response.data.rents[x]);
+              vue.rentStatusNum++;
+            }
           }
+          console.log(vue.rentList);
         })
         .catch(function (error) {
           console.log(error);

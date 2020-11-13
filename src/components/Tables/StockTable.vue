@@ -25,7 +25,7 @@
         }}</md-table-head>
       </md-table-row>
 
-      <md-table-row v-for="item in productGroup">
+      <md-table-row v-for="(item, index) in productGroup" :key="index">
         <md-table-cell>{{ item.group_name }}</md-table-cell>
         <md-table-cell>{{
           item.group_count_available - item.group_count_rent
@@ -85,6 +85,7 @@ export default {
           for (var x = 0; x < Object.keys(response.data.groups).length; x++) {
             vue.productGroup.push(response.data.groups[x]);
           }
+          console.log(vue.productGroup);
         })
         .catch(function (error) {
           console.log(error);

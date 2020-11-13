@@ -25,7 +25,7 @@
         }}</md-table-head>
       </md-table-row>
 
-      <md-table-row v-for="item in userList">
+      <md-table-row v-for="item in userList" :key="item.user_index">
         <md-table-cell>{{ item.user_index }}</md-table-cell>
         <md-table-cell>{{ item.user_id }}</md-table-cell>
         <md-table-cell>{{ item.user_name }}</md-table-cell>
