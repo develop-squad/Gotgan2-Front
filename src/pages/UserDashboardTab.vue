@@ -175,9 +175,9 @@
 <script>
 import axios from 'axios';
 
-var params = new URLSearchParams();
+let params = new URLSearchParams();
 
-var propsEmpty = false;
+//let propsEmpty = false;
 
 
 export default {
@@ -233,17 +233,17 @@ export default {
   },
   methods: {
     // 대여 현황 받아오기
-    exportRentData: function(param){
-      var vue = this;
+    exportRentData: (param) =>{
+      let vue = this;
 
       axios.post('https://api.devx.kr/GotGan/v1/rent_list.php', param)
       .then(function(response) {
         vue.rentList = [];
-        var userIndex = vue._props.userInfo_Tab.user_index;
+        let userIndex = vue._props.userInfo_Tab.user_index;
         if(userIndex != null){
-          for(var x = 0; x < response.data.rents.length; x++){
-            if(userIndex == response.data.rents[x].rent_user_index){
-              var obj = response.data.rents[x];
+          for(let index = 0; index < response.data.rents.length; index++){
+            if(userIndex == response.data.rents[index].rent_user_index){
+              let obj = response.data.rents[index];
               obj.rent_time_start = obj.rent_time_start.slice(0, 10);
               obj.rent_time_end != null ? obj.rent_time_end = obj.rent_time_end.slice(0, 10) : 0;
               obj.rent_time_return != null ? obj.rent_time_return = obj.rent_time_return.slice(0, 10) : 0;
@@ -266,36 +266,36 @@ export default {
           vue.exportRentData(params);
         }
       })
-      .catch(function(error) {
+      .catch((error) =>{
         console.log(error);
       });
     },
     // 재고와 그룹 데이터 받아오기
-    exportProductData: function(param){
-      var vue = this;
+    exportProductData: (param) =>{
+      let vue = this;
 
       axios.post('https://api.devx.kr/GotGan/v1/product_list.php', param)
-      .then(function(response) {
+      .then((response) =>{
         //console.log(response.data);
-        for(var x = 0; x < response.data.groups.length;x++){
-          vue.groupList.push(response.data.groups[x]);
+        for(let index = 0; index < response.data.groups.length;index++){
+          vue.groupList.push(response.data.groups[index]);
         }
-        for(var x = 0; x < response.data.products.length;x++){
-          vue.productList.push(response.data.products[x]);
+        for(let index = 0; index < response.data.products.length;index++){
+          vue.productList.push(response.data.products[index]);
         }
       })
-      .catch(function(error) {
+      .catch((error) =>{
         console.log(error);
       });
     },
     // 대여 신청 버튼
-    sendRentButton: function(){
+    sendRentButton: () =>{
       if(this.add_RentProduct == ""){
         alert("대여할 물품을 선택하시오.");
       }else if(this.add_RentStartDay == ""){
         alert("시작일을 선택하시오.");
       }else{
-        for(var i in this.productList){
+        for(let i in this.productList){
           if(this.productList[i].product_index == this.add_RentProduct)
           this.rentProductName = this.productList[i].product_name;
         }
@@ -303,70 +303,70 @@ export default {
       }
     },
     // 대여 신청 전송
-    sendRentData: function(){
-      var rentParams = new URLSearchParams();
-      var vue = this;
+    sendRentData: () =>{
+      let rentParams = new URLSearchParams();
+      let vue = this;
       rentParams.append('session', this.getCookie("session"));
       rentParams.append('rent_product', this.add_RentProduct);
       rentParams.append('rent_user', this._props.userInfo_Tab.user_index);
       rentParams.append('rent_time_start', this.add_RentStartDay);
 
       axios.post('https://api.devx.kr/GotGan/v1/rent_add.php', rentParams)
-      .then(function(response) {
+      .then((response) =>{
         //console.log(response.data);
         vue.showRentDialog = false;
         vue.exportRentData(params);
       })
-      .catch(function(error) {
+      .catch((error) =>{
         console.log(error);
       });
     },
     // 날짜 관련 계산
-    calculateStartDay: function(){
+    calculateStartDay: () =>{
       try {
-        var month, day = "";
-        var num = this.input_RentStartDay.getMonth() + 1;
+        let month, day = "";
+        let num = this.input_RentStartDay.getMonth() + 1;
         num < 10 ? month = "0" + num : month = num;
-        this.input_RentStartDay.getDate() < 10 ? day =  "0" + this.input_RentStartDay.getDate() : day =this.input_RentStartDay.getDate();
+        this.input_RentStartDay.getDate() < 10 ? day =  `0${this.input_RentStartDay.getDate()}` : day =this.input_RentStartDay.getDate();
 
-        this.add_RentStartDay = this.input_RentStartDay.getFullYear() + "-" + month + "-" + day + " 00:00:00";
-        var endDate = new Date(this.input_RentStartDay);
+        this.add_RentStartDay = `${this.input_RentStartDay.getFullYear()}-${month}-${day} 00:00:00`;
+        let endDate = new Date(this.input_RentStartDay);
         endDate.setDate(parseInt(day) + this.rentableDay);
 
 
         num = endDate.getMonth() + 1;
-        num < 10 ? month = "0" + num : month = num;
-        endDate.getDate() < 10 ? day =  "0" + endDate.getDate() : day =endDate.getDate();
+        num < 10 ? month = `0${num}` : month = num;
+        endDate.getDate() < 10 ? day =  `0${endDate.getDate()}` : day =endDate.getDate();
 
 
-        this.add_RentEndDay = endDate.getFullYear() + "-" + month + "-" + day ;
+        this.add_RentEndDay = `${endDate.getFullYear()}-${month}-${day}`;
       } catch (e) {
       }
     },
     //물품 그룹 선택시 상세 물품 선택 초기화
-    clearSelectedProduct: function(){
+    clearSelectedProduct: () =>{
       this.add_RentProduct = "";
     },
     // 상세 물품 선택시 대여 가능일수 확인
-    checkSelectedProduct: function(){
+    checkSelectedProduct: () =>{
       if(this.input_RentStartDay != null){
         this.input_RentStartDay = null;
         this.add_RentEndDay = "";
       }
 
-      for(var i in this.groupList){
+      for(let i in this.groupList){
         this.groupList[i].group_index == this.add_RentGroup ? this.rentableDay = this.groupList[i].group_rentable : 0;
       }
     },
-    modifyButton: function(){
+    modifyButton: () =>{
       this.modifyUserInfo = true;
     },
-    cancleButton: function(){
+    cancleButton: () =>{
       this.modifyUserInfo = false;
     },
-    modifySendButton: function(){
-      var vue = this;
-      var userModifyParams = new URLSearchParams();
+    modifySendButton: () =>{
+      let vue = this;
+      let userModifyParams = new URLSearchParams();
       userModifyParams.append('session', vue.getCookie("session"));
       userModifyParams.append('user_index', vue._props.userInfo_Tab.user_index);
       userModifyParams.append('user_name', vue.userInfo.name);
@@ -376,14 +376,14 @@ export default {
       userModifyParams.append('user_phone', vue.userInfo.phone);
 
       axios.post('https://api.devx.kr/GotGan/v1/user_modify.php', userModifyParams)
-      .then(function(response) {
+      .then((response) =>{
         console.log(response.data);
       })
-      .catch(function(error) {
+      .catch((error) =>{
         console.log(error);
       });
     },
-    resetModifyInfo: function(){
+    resetModifyInfo: () =>{
       this.modifyUserInfo = false;
 
       this.userInfo = {
@@ -394,11 +394,11 @@ export default {
         phone: this._props.userInfo_Tab.user_phone
       };
     },
-    getCookie: function(_name) {
-      var value = document.cookie.match('(^|;) ?' + _name + '=([^;]*)(;|$)');
+    getCookie: (_name) =>{
+      let value = document.cookie.match('(^|;) ?' + _name + '=([^;]*)(;|$)');
       return value? value[2] : null;
     },
-    postRentLisrButton: function(){
+    postRentLisrButton: () =>{
       this.showPostRent = !this.showPostRent;
     }
   },

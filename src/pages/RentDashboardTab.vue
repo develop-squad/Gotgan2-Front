@@ -138,17 +138,17 @@ import {
 
 export default {
   created() {
-    var vue = this;
+    let vue = this;
 
-    this.$EventBus.$on('allowButton', function(params) {
+    this.$EventBus.$on('allowButton', (params) =>{
       vue.showAllow(params);
     });
 
-    this.$EventBus.$on('rejectButton', function(params) {
+    this.$EventBus.$on('rejectButton', (params) =>{
       vue.showReject(params);
     });
 
-    this.$EventBus.$on('returnButton', function(params) {
+    this.$EventBus.$on('returnButton', (params) =>{
       vue.showReturn(params);
     });
   },
@@ -169,34 +169,34 @@ export default {
     RentStatusTable
   },
   methods: {
-    showAllow: function(obj){
+    showAllow: (obj) =>{
       console.log(obj);
       this.dialogInfo = obj;
       this.showAllowDialog = true;
     },
-    showReject: function(obj){
+    showReject: (obj) =>{
       console.log(obj);
       this.dialogInfo = obj;
       this.showRejectDialog = true;
     },
-    showReturn: function(obj){
+    showReturn: (obj) =>{
       console.log(obj);
       this.dialogInfo = obj;
       this.showReturnDialog = true;
     },
-    sendAllowButton: function(){
+    sendAllowButton: () =>{
       console.log(this.dialogInfo);
-      var vue = this;
+      let vue = this;
       this.showAllowDialog = false;
       this.$EventBus.$emit('sendAllow', vue.dialogInfo.rent_index);
     },
-    sendRejectButton: function(){
-      var vue = this;
+    sendRejectButton: () =>{
+      let vue = this;
       this.showRejectDialog = false;
       this.$EventBus.$emit('sendReject', vue.dialogInfo.rent_index);
     },
-    sendReturnButton: function(){
-      var vue = this;
+    sendReturnButton: () =>{
+      let vue = this;
       this.showReturnDialog = false;
       this.$EventBus.$emit('sendReturn', vue.dialogInfo.rent_index);
     }

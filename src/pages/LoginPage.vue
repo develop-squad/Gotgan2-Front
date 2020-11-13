@@ -97,17 +97,17 @@ export default {
     }
   },
   methods: {
-    signIn : function(){
+    signIn :()=>{
       if(this.userID == "" || this.userPW == ""){
         this.hasMessages = true;
       }else{
-        var signInParams = new URLSearchParams();
-        var vue = this;
+        let signInParams = new URLSearchParams();
+        let vue = this;
         signInParams.append('user_id', this.user_ID);
         signInParams.append('user_pw', this.user_Password);
 
         axios.post('https://api.devx.kr/GotGan/v1/login.php', signInParams)
-        .then(function(response) {
+        .then((response)=> {
           vue.$emit("child",response.data);
           if(response.data.result == 0){
             //로그인 성공
@@ -120,13 +120,13 @@ export default {
           }
 
         })
-        .catch(function(error) {
+        .catch((error)=> {
           console.log(error);
         });
       }
     },
-    signUp : function(){
-      var signUpParams = new URLSearchParams();
+    signUp : ()=>{
+      let signUpParams = new URLSearchParams();
       signUpParams.append('user_id', this.user_ID);
       signUpParams.append('user_pw', this.user_Password);
       signUpParams.append('user_level', this.user_Level);
@@ -137,21 +137,21 @@ export default {
       signUpParams.append('user_sid', this.user_SID);
 
       axios.post('https://api.devx.kr/GotGan/v1/login.php', signUpParams)
-      .then(function(response) {
+      .then((response)=> {
         console.log(response.data);
       })
-      .catch(function(error) {
+      .catch((error)=> {
         console.log(error);
       });
     },
-    setCookie: function(_name, _value){
-      var date = new Date();
+    setCookie: (_name, _value)=>{
+      let date = new Date();
       date.setTime(date.getTime() + 60 * 30 * 1000); // 30min
       //document.cookie = _name + '=' + _value + ';expires=' + date.toUTCString() + ';path=/';
-      document.cookie = _name + '=' + _value + ';path=/';
+      document.cookie = `${_name} = ${_value};path=/`;
     },
-    getCookie: function(_name) {
-      var value = document.cookie.match('(^|;) ?' + _name + '=([^;]*)(;|$)');
+    getCookie: (_name)=> {
+      let value = document.cookie.match(`(^|;) ?${_name} =([^;]*)(;|$)`);
       return value? value[2] : null;
     }
   },
@@ -169,18 +169,18 @@ export default {
   },
   created() {
     if(this.getCookie("session") != null){
-      var signInParams = new URLSearchParams();
-      var vue = this;
+      let signInParams = new URLSearchParams();
+      let vue = this;
       signInParams.append("session", this.getCookie("session"));
       axios.post('https://api.devx.kr/GotGan/v1/login.php', signInParams)
-      .then(function(response) {
+      .then((response)=> {
         vue.$emit("child",response.data);
         if(response.data.result == 0){
           //로그인 성공
           response.data.user_level == 2 ? router.push("/admin/stockdashboard") : router.push("/user");
         }
       })
-      .catch(function(error) {
+      .catch((error)=> {
         console.log(error);
       });
     }

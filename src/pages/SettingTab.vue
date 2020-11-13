@@ -32,7 +32,7 @@ export default {
     updated() {
     },
     methods: {
-      switchLanguage: function(){
+      switchLanguage: () =>{
         this.$EventBus.$emit('changeLanguage');
       }
     }

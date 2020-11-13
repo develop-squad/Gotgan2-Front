@@ -361,63 +361,63 @@ export default {
 
   },
   methods: {
-    exportProductData: function(param){
-      var vue = this;
+    exportProductData: (param) =>{
+      let vue = this;
       axios.post('https://api.devx.kr/GotGan/v1/product_overview.php', param)
-      .then(function(response) {
-        for(var x = 0; x < response.data.groups.length; x++){
-          vue.product_groups.push(response.data.groups[x]);
+      .then((response) =>{
+        for(let index = 0; index < response.data.groups.length; index++){
+          vue.product_groups.push(response.data.groups[index]);
         }
       })
-      .catch(function(error) {
+      .catch((error) =>{
         console.log(error);
       });
     },
-    exportUserData: function(param){
-      var vue = this;
+    exportUserData: (param) =>{
+      let vue = this;
       axios.post('https://api.devx.kr/GotGan/v1/user_list.php', param)
-      .then(function(response) {
-        for(var x = 0; x < response.data.groups.length; x++){
-          vue.user_Groups.push(response.data.groups[x]);
+      .then((response) =>{
+        for(let index = 0; index < response.data.groups.length; index++){
+          vue.user_Groups.push(response.data.groups[index]);
         }
       })
-      .catch(function(error) {
+      .catch((error) =>{
         console.log(error);
       });
     },
-    sendGroupAddData: function(param, product){
-      var vue = this;
+    sendGroupAddData: (param, product) =>{
+      let vue = this;
       axios.post('https://api.devx.kr/GotGan/v1/product_group_add.php', param)
-      .then(function(response) {
+      .then((response) =>{
         if(product != 0){
           product.product_group = response.data.product_group_index;
-          var array = new Array();
+          let array = new Array();
           array.push(product);
-          var addProductParams = new URLSearchParams();
+          let addProductParams = new URLSearchParams();
           addProductParams.append('session', vue.getCookie("session"));
           addProductParams.append('products', JSON.stringify(array));
 
           vue.sendProductAddData(addProductParams);
         }
       })
-      .catch(function(error) {
+      .catch((error) =>{
         console.log(error);
       });
     },
-    sendProductAddData: function(param){
-      var vue = this;
+    sendProductAddData: (param) =>{
+      let vue = this;
       axios.post('https://api.devx.kr/GotGan/v1/product_add.php', param)
-      .then(function(response) {
+      .then((response) =>{
         // 새로고침 말고 테이블만 로드 필요
         location.reload();
       })
-      .catch(function(error) {
+      .catch((error) =>{
         console.log(error);
       });
     },
-    addProductButton: function(){
+    addProductButton: () =>{
       // 재고 추가 버튼
-      var addGroupParams = new URLSearchParams();
+      let addGroupParams = new URLSearchParams();
 
       if(this.tabSelect){
         // 그룹 추가
@@ -430,11 +430,11 @@ export default {
         this.sendGroupAddData(addGroupParams, 0);
       }else{
         // 재고 추가
-        var addProductParams = new URLSearchParams();
+        let addProductParams = new URLSearchParams();
 
-        var array = new Array();
+        let array = new Array();
 
-        var obj = {
+        let obj = {
           'product_group' : this.add_ProductGroup,
           'product_name' : this.add_ProductName,
           'product_status' : this.add_ProductStatus,
@@ -461,11 +461,11 @@ export default {
         }
       }
     },
-    getCookie: function(_name) {
-      var value = document.cookie.match('(^|;) ?' + _name + '=([^;]*)(;|$)');
+    getCookie: (_name) =>{
+      let value = document.cookie.match(`(^|;) ? ${_name} =([^;]*)(;|$)`);
       return value? value[2] : null;
     },
-    test: function(activeTab){
+    test: (activeTab) =>{
       if(activeTab == "stockAddTab"){
         this.tabSelect = 0;
       }else if(activeTab == "groupAddTab"){
