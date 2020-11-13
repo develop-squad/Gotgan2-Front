@@ -48,21 +48,19 @@
           <md-table v-show="item.showTable">
             <md-table-row>
               <md-table-head>{{
-                this._props.englishSwitch_Table ? "Barcode" : "바코드ID"
+                _props.englishSwitch_Table ? "Barcode" : "바코드ID"
               }}</md-table-head>
               <md-table-head>{{
-                this._props.englishSwitch_Table ? "Index" : "물품 인덱스"
+                _props.englishSwitch_Table ? "Index" : "물품 인덱스"
               }}</md-table-head>
               <md-table-head>{{
-                this._props.englishSwitch_Table ? "Product" : "이름"
+                _props.englishSwitch_Table ? "Product" : "이름"
               }}</md-table-head>
               <md-table-head>{{
-                this._props.englishSwitch_Table ? "Attached" : "소속"
+                _props.englishSwitch_Table ? "Attached" : "소속"
               }}</md-table-head>
               <md-table-head>{{
-                this._props.englishSwitch_Table
-                  ? "Generation Date"
-                  : "구매 일자"
+                _props.englishSwitch_Table ? "Generation Date" : "구매 일자"
               }}</md-table-head>
             </md-table-row>
 
