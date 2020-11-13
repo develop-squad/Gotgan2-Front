@@ -2,27 +2,41 @@
   <div class="md-layout loginBackground">
     <div class="md-layout-item md-size-20"></div>
     <md-card class="md-layout-item md-size-60 md-gutter card">
-      <div class="md-layout" style="height:100%;">
-        <div class="md-layout-item md-xlarge-size-50 md-large-size-45 md-medium-size-45 logoDiv" >
-          <img src="../assets/img/gotgan-logo.png" class="logoImg">
+      <div class="md-layout" style="height: 100%">
+        <div
+          class="md-layout-item md-xlarge-size-50 md-large-size-45 md-medium-size-45 logoDiv"
+        >
+          <img src="../assets/img/gotgan-logo.png" class="logoImg" />
         </div>
 
-        <div class="md-layout-item md-xlarge-size-50 md-large-size-55 md-medium-size-55 " style="margin:auto;">
-          <div class="md-layout" style="height:100%;">
-            <div class="md-layout-item md-size-20">
-            </div>
+        <div
+          class="md-layout-item md-xlarge-size-50 md-large-size-55 md-medium-size-55"
+          style="margin: auto"
+        >
+          <div class="md-layout" style="height: 100%">
+            <div class="md-layout-item md-size-20"></div>
             <div class="md-layout-item md-size-60">
               <h3 class="loginText">Makerspace Stock Management Systme</h3>
 
               <md-field :class="messageClass" :md-counter="false">
                 <label for="userID">ID</label>
-                <md-input name="userID" v-model="user_ID" maxlength="20" required/>
+                <md-input
+                  name="userID"
+                  v-model="user_ID"
+                  maxlength="20"
+                  required
+                />
                 <span class="md-error">There is an error</span>
               </md-field>
               <md-field :class="messageClass" :md-counter="false">
-
                 <label for="userPW">Password</label>
-                <md-input name="userPW" v-model="user_Password" type="password"  maxlength="20" required/>
+                <md-input
+                  name="userPW"
+                  v-model="user_Password"
+                  type="password"
+                  maxlength="20"
+                  required
+                />
                 <span class="md-error">There is an error</span>
               </md-field>
 
@@ -30,43 +44,75 @@
                 <div v-bind:key="showCard">
                   <md-field :md-counter="false" v-if="showCard">
                     <label for="userName">이름</label>
-                    <md-input name="userName" v-model="user_Name" maxlength="20" required/>
+                    <md-input
+                      name="userName"
+                      v-model="user_Name"
+                      maxlength="20"
+                      required
+                    />
                     <span class="md-error">There is an error</span>
                   </md-field>
 
                   <md-field :md-counter="false" v-if="showCard">
                     <label for="userEmail">이메일</label>
-                    <md-input name="userEmail" v-model="user_Email" maxlength="20"/>
+                    <md-input
+                      name="userEmail"
+                      v-model="user_Email"
+                      maxlength="20"
+                    />
                   </md-field>
 
                   <md-field :md-counter="false" v-if="showCard">
                     <label for="user_Phone">전화번호</label>
-                    <md-input name="user_Phone" v-model="user_Phone" maxlength="20"/>
+                    <md-input
+                      name="user_Phone"
+                      v-model="user_Phone"
+                      maxlength="20"
+                    />
                   </md-field>
 
                   <md-field :md-counter="false" v-if="showCard">
                     <label for="userGroup">유저그룹</label>
-                    <md-input name="userGroup" v-model="user_Group" maxlength="20"/>
+                    <md-input
+                      name="userGroup"
+                      v-model="user_Group"
+                      maxlength="20"
+                    />
                   </md-field>
 
                   <md-field :md-counter="false" v-if="showCard">
                     <label for="userSID">학번</label>
-                    <md-input name="userSID" v-model="user_SID" maxlength="20"/>
+                    <md-input
+                      name="userSID"
+                      v-model="user_SID"
+                      maxlength="20"
+                    />
                   </md-field>
                 </div>
               </transition-group>
               <div class="buttonSpace">
-                <md-button class="md-raised" v-on:click="signIn" :to="link" v-if="showCard == 0">Sign in</md-button>
+                <md-button
+                  class="md-raised"
+                  v-on:click="signIn"
+                  :to="link"
+                  v-if="showCard == 0"
+                  >Sign in</md-button
+                >
 
-                <md-button v-on:click="showCard = 0" v-if="showCard == 1">Cancle</md-button>
-                <md-button v-on:click="signUp" v-if="showCard == 1">Register</md-button>
+                <md-button v-on:click="showCard = 0" v-if="showCard == 1"
+                  >Cancle</md-button
+                >
+                <md-button v-on:click="signUp" v-if="showCard == 1"
+                  >Register</md-button
+                >
               </div>
               <div class="buttonSpace">
-                <a class="signIn" v-on:click="showCard = 1" v-if="showCard == 0">Create your account -></a>
+                <a class="signIn" v-on:click="showCard = 1" v-if="showCard == 0"
+                  >Create your account -></a
+                >
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </md-card>
@@ -88,7 +134,7 @@ export default {
       link: "",
       hasMessages: false,
       showCard: 0,
-      user_Level: 0,
+      userLevel: 0,
       user_Name: "",
       user_Group: 0,
       user_SID: "",
@@ -97,7 +143,8 @@ export default {
     }
   },
   methods: {
-    signIn : function(){
+    
+    signIn(){
       if(this.userID == "" || this.userPW == ""){
         this.hasMessages = true;
       }else{
@@ -107,7 +154,7 @@ export default {
         signInParams.append('user_pw', this.user_Password);
 
         axios.post('https://api.devx.kr/GotGan/v1/login.php', signInParams)
-        .then(function(response) {
+        .then((response) => {
           vue.$emit("child",response.data);
           if(response.data.result == 0){
             //로그인 성공
@@ -193,17 +240,16 @@ export default {
 /* xlarge */
 @media (min-width: 1920px) {
   .card {
-    margin: 8rem 0!important;
+    margin: 8rem 0 !important;
   }
   .loginText {
-
   }
 }
 
 /* large */
 @media (min-width: 1280px) and (max-width: 1919px) {
   .card {
-    margin: 6rem 0!important;
+    margin: 6rem 0 !important;
   }
   .loginText {
     font-size: 1.1rem;
@@ -213,14 +259,12 @@ export default {
 /* medium */
 @media (min-width: 960px) and (max-width: 1279px) {
   .card {
-    margin: 4rem 0!important;
+    margin: 4rem 0 !important;
   }
   .loginText {
     font-size: 0.9rem;
   }
 }
-
-
 
 .cardDiv {
   transition-property: all;
@@ -228,19 +272,19 @@ export default {
 }
 
 .slide-fade-enter-active {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
-transform: translateX(10px);
-opacity: 0;
+  transform: translateX(10px);
+  opacity: 0;
 }
 
 .loginBackground {
-  height:-webkit-fill-available;
+  height: -webkit-fill-available;
   background-image: url("../assets/img/Login_Background2.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -252,12 +296,12 @@ opacity: 0;
 }
 
 .signIn {
-  color: #999999!important;
+  color: #999999 !important;
   margin: 0 auto;
 }
 
 .signIn:hover {
-  color: green!important;
+  color: green !important;
   cursor: pointer;
   margin: 0 auto;
 }
@@ -267,7 +311,7 @@ opacity: 0;
 }
 
 .logoImg {
-  width: 80%!important;
+  width: 80% !important;
 }
 
 .logoDiv {

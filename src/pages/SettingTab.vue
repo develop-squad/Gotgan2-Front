@@ -4,8 +4,7 @@
       <div class="md-layout-item">
         <md-card class="md-card-plain">
           <md-card-header data-background-color="green">
-            <h4 class="title" v-if="!this._props.englishSwitch_Tab">언어 변환</h4>
-            <h4 class="title" v-if="this._props.englishSwitch_Tab">Language Change</h4>
+            <h4 class="title">{{this._props.englishSwitch_Tab ? "Language Change" : "언어 변환"}}</h4>
             <md-switch v-model="englishSwitch" @change="switchLanguage">English</md-switch>
           </md-card-header>
         </md-card>
