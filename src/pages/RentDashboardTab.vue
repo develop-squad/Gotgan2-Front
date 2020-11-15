@@ -14,7 +14,7 @@
           </md-card-header>
 
           <md-card-content>
-            <rent-request-table table-header-color="red"  :userInfo_Table="userInfo_Tab" :englishSwitch_Table="englishSwitch_Tab"></rent-request-table>
+            <rent-request-table table-header-color="red"  :userInfo_Table="UserInfoTab" :englishSwitch_Table="englishSwitch_Tab"></rent-request-table>
           </md-card-content>
         </md-card>
 
@@ -30,7 +30,7 @@
           </md-card-header>
 
           <md-card-content>
-            <rent-status-table table-header-color="red"  :userInfo_Table="userInfo_Tab" :englishSwitch_Table="englishSwitch_Tab"></rent-status-table>
+            <rent-status-table table-header-color="red"  :userInfo_Table="UserInfoTab" :englishSwitch_Table="englishSwitch_Tab"></rent-status-table>
           </md-card-content>
         </md-card>
       </div>
@@ -153,7 +153,7 @@ export default {
     });
   },
   props: {
-    userInfo_Tab: Object,
+    UserInfoTab: Object,
     englishSwitch_Tab: Boolean
   },
   data(){
@@ -169,33 +169,33 @@ export default {
     RentStatusTable
   },
   methods: {
-    showAllow: (obj) =>{
+    showAllow (obj){
       console.log(obj);
       this.dialogInfo = obj;
       this.showAllowDialog = true;
     },
-    showReject: (obj) =>{
+    showReject (obj){
       console.log(obj);
       this.dialogInfo = obj;
       this.showRejectDialog = true;
     },
-    showReturn: (obj) =>{
+    showReturn (obj){
       console.log(obj);
       this.dialogInfo = obj;
       this.showReturnDialog = true;
     },
-    sendAllowButton: () =>{
+    sendAllowButton (){
       console.log(this.dialogInfo);
       let vue = this;
       this.showAllowDialog = false;
       this.$EventBus.$emit('sendAllow', vue.dialogInfo.rent_index);
     },
-    sendRejectButton: () =>{
+    sendRejectButton (){
       let vue = this;
       this.showRejectDialog = false;
       this.$EventBus.$emit('sendReject', vue.dialogInfo.rent_index);
     },
-    sendReturnButton: () =>{
+    sendReturnButton (){
       let vue = this;
       this.showReturnDialog = false;
       this.$EventBus.$emit('sendReturn', vue.dialogInfo.rent_index);

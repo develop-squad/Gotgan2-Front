@@ -233,11 +233,11 @@ export default {
   },
   methods: {
     // 대여 현황 받아오기
-    exportRentData: (param) =>{
+    exportRentData (param){
       let vue = this;
 
       axios.post('https://api.devx.kr/GotGan/v1/rent_list.php', param)
-      .then(function(response) {
+      .then((response) =>{
         vue.rentList = [];
         let userIndex = vue._props.userInfo_Tab.user_index;
         if(userIndex != null){
@@ -271,7 +271,7 @@ export default {
       });
     },
     // 재고와 그룹 데이터 받아오기
-    exportProductData: (param) =>{
+    exportProductData (param){
       let vue = this;
 
       axios.post('https://api.devx.kr/GotGan/v1/product_list.php', param)
@@ -289,7 +289,7 @@ export default {
       });
     },
     // 대여 신청 버튼
-    sendRentButton: () =>{
+    sendRentButton (){
       if(this.add_RentProduct == ""){
         alert("대여할 물품을 선택하시오.");
       }else if(this.add_RentStartDay == ""){
@@ -303,7 +303,7 @@ export default {
       }
     },
     // 대여 신청 전송
-    sendRentData: () =>{
+    sendRentData (){
       let rentParams = new URLSearchParams();
       let vue = this;
       rentParams.append('session', this.getCookie("session"));
@@ -322,7 +322,7 @@ export default {
       });
     },
     // 날짜 관련 계산
-    calculateStartDay: () =>{
+    calculateStartDay (){
       try {
         let month, day = "";
         let num = this.input_RentStartDay.getMonth() + 1;
@@ -344,11 +344,11 @@ export default {
       }
     },
     //물품 그룹 선택시 상세 물품 선택 초기화
-    clearSelectedProduct: () =>{
+    clearSelectedProduct (){
       this.add_RentProduct = "";
     },
     // 상세 물품 선택시 대여 가능일수 확인
-    checkSelectedProduct: () =>{
+    checkSelectedProduct (){
       if(this.input_RentStartDay != null){
         this.input_RentStartDay = null;
         this.add_RentEndDay = "";
@@ -358,13 +358,13 @@ export default {
         this.groupList[i].group_index == this.add_RentGroup ? this.rentableDay = this.groupList[i].group_rentable : 0;
       }
     },
-    modifyButton: () =>{
+    modifyButton (){
       this.modifyUserInfo = true;
     },
-    cancleButton: () =>{
+    cancleButton (){
       this.modifyUserInfo = false;
     },
-    modifySendButton: () =>{
+    modifySendButton (){
       let vue = this;
       let userModifyParams = new URLSearchParams();
       userModifyParams.append('session', vue.getCookie("session"));
@@ -383,7 +383,7 @@ export default {
         console.log(error);
       });
     },
-    resetModifyInfo: () =>{
+    resetModifyInfo (){
       this.modifyUserInfo = false;
 
       this.userInfo = {
@@ -394,7 +394,7 @@ export default {
         phone: this._props.userInfo_Tab.user_phone
       };
     },
-    getCookie: (_name) =>{
+    getCookie (_name){
       let value = document.cookie.match('(^|;) ?' + _name + '=([^;]*)(;|$)');
       return value? value[2] : null;
     },

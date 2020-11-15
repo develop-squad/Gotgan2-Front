@@ -4,36 +4,36 @@
       <div class="md-layout-item">
         <!-- 재고 상세 테이블 카드-->
         <md-card>
-          <md-card-header data-background-color="red" v-if="!this._props.englishSwitch_Tab">
+          <md-card-header data-background-color="red" v-if="!this._props.EnglishSwitchTab">
             <h4 class="title">재고 상세</h4>
             <p class="category">상세한 재고 보여주기</p>
           </md-card-header>
 
-          <md-card-header data-background-color="red" v-if="this._props.englishSwitch_Tab">
+          <md-card-header data-background-color="red" v-if="this._props.EnglishSwitchTab">
             <h4 class="title">Stock Detail</h4>
             <p class="category">Show about stock details</p>
           </md-card-header>
 
           <md-card-content>
-            <stock-detail-table :userInfo_Table="userInfo_Tab" :englishSwitch_Table="englishSwitch_Tab"></stock-detail-table>
+            <stock-detail-table :userInfo_Table="UserInfoTab" :englishSwitch_Table="EnglishSwitchTab"></stock-detail-table>
           </md-card-content>
         </md-card>
 
         <!-- 재고 / 그룹 추가 카드-->
         <md-card>
-          <md-card-header data-background-color="red" v-if="!this._props.englishSwitch_Tab">
+          <md-card-header data-background-color="red" v-if="!this._props.EnglishSwitchTab">
             <h4 class="title">재고 / 그룹 추가</h4>
             <p class="category">추가하기</p>
           </md-card-header>
 
-          <md-card-header data-background-color="red" v-if="this._props.englishSwitch_Tab">
+          <md-card-header data-background-color="red" v-if="this._props.EnglishSwitchTab">
             <h4 class="title">Stock / Group Add</h4>
             <p class="category">Add</p>
           </md-card-header>
 
           <md-card-content>
             <md-tabs md-dynamic-height @md-changed="test($event)" class="md-accent">
-              <md-tab id="stockAddTab" md-label="재고 추가" v-if="!this._props.englishSwitch_Tab">
+              <md-tab id="stockAddTab" md-label="재고 추가" v-if="!this._props.EnglishSwitchTab">
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-small-size-100">
                     <md-field >
@@ -47,7 +47,7 @@
                       <label for="product_group">그룹</label>
                       <md-select v-model="add_ProductGroup" name="product_group" id="product_group" md-dense :disabled="sending" required>
                         <md-option value="group_add">그룹 추가</md-option>
-                        <md-option v-for="item in product_groups" v-bind:value="item.group_index">
+                        <md-option v-for="item in ProductGroups" v-bind:value="item.group_index">
                           {{ item.group_name }}
                         </md-option>
                       </md-select>
@@ -73,7 +73,7 @@
                     <md-field >
                       <label for="add_ProductOwner">소속</label>
                       <md-select v-model="add_ProductOwner"  name="add_ProductOwner" id="add_ProductOwner"  md-dense :disabled="sending">
-                        <md-option v-for="item in user_Groups" v-bind:value="item.group_index">
+                        <md-option v-for="item in UserGroups" v-bind:value="item.group_index">
                           {{ item.group_name }}
                         </md-option>
                       </md-select>
@@ -127,7 +127,7 @@
                 </div>
               </md-tab>
 
-              <md-tab id="stockAddTab" md-label="Stock Add" v-if="this._props.englishSwitch_Tab">
+              <md-tab id="stockAddTab" md-label="Stock Add" v-if="this._props.EnglishSwitchTab">
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-small-size-100">
                     <md-field >
@@ -141,7 +141,7 @@
                       <label for="product_group">Group</label>
                       <md-select v-model="add_ProductGroup" name="product_group" id="product_group" md-dense :disabled="sending" required>
                         <md-option value="group_add">Add Group</md-option>
-                        <md-option v-for="item in product_groups" v-bind:value="item.group_index">
+                        <md-option v-for="item in ProductGroups" v-bind:value="item.group_index">
                           {{ item.group_name }}
                         </md-option>
                       </md-select>
@@ -167,7 +167,7 @@
                     <md-field >
                       <label for="add_ProductOwner">Attached</label>
                       <md-select v-model="add_ProductOwner"  name="add_ProductOwner" id="add_ProductOwner"  md-dense :disabled="sending">
-                        <md-option v-for="item in user_Groups" v-bind:value="item.group_index">
+                        <md-option v-for="item in UserGroups" v-bind:value="item.group_index">
                           {{ item.group_name }}
                         </md-option>
                       </md-select>
@@ -221,7 +221,7 @@
                 </div>
               </md-tab>
 
-              <md-tab id="groupAddTab" md-label="그룹 추가" v-if="!this._props.englishSwitch_Tab">
+              <md-tab id="groupAddTab" md-label="그룹 추가" v-if="!this._props.EnglishSwitchTab">
                 <div class="md-layout md-gutter">
 
                   <div class="md-layout-item md-size-30 md-small-size-100">
@@ -262,7 +262,7 @@
                 </div>
               </md-tab>
 
-              <md-tab id="groupAddTab" md-label="Group Add" v-if="this._props.englishSwitch_Tab">
+              <md-tab id="groupAddTab" md-label="Group Add" v-if="this._props.EnglishSwitchTab">
                 <div class="md-layout md-gutter">
 
                   <div class="md-layout-item md-size-30 md-small-size-100">
@@ -306,8 +306,8 @@
 
 
             <md-card-actions>
-              <md-button type="submit" class="md-primary" :disabled="sending" @click="addProductButton()" v-if="!this._props.englishSwitch_Tab">재고 추가</md-button>
-              <md-button type="submit" class="md-primary" :disabled="sending" @click="addProductButton()" v-if="this._props.englishSwitch_Tab">Submit</md-button>
+              <md-button type="submit" class="md-primary" :disabled="sending" @click="addProductButton()" v-if="!this._props.EnglishSwitchTab">재고 추가</md-button>
+              <md-button type="submit" class="md-primary" :disabled="sending" @click="addProductButton()" v-if="this._props.EnglishSwitchTab">Submit</md-button>
             </md-card-actions>
           </md-card-content>
         </md-card>
@@ -326,8 +326,8 @@ import {
 
 export default {
   props: {
-    userInfo_Tab: Object,
-    englishSwitch_Tab: Boolean
+    UserInfoTab: Object,
+    EnglishSwitchTab: Boolean
   },
   components: {
     StockDetailTable
@@ -335,8 +335,8 @@ export default {
   data() {
     return {
       sending: false,
-      product_groups: [],
-      user_Groups: [],
+      ProductGroups: [],
+      UserGroups: [],
       showGroupAdd: false,
       add_ProductName: "",
       add_ProductGroup: "",
@@ -361,31 +361,31 @@ export default {
 
   },
   methods: {
-    exportProductData: (param) =>{
+    exportProductData (param){
       let vue = this;
       axios.post('https://api.devx.kr/GotGan/v1/product_overview.php', param)
       .then((response) =>{
         for(let index = 0; index < response.data.groups.length; index++){
-          vue.product_groups.push(response.data.groups[index]);
+          vue.ProductGroups.push(response.data.groups[index]);
         }
       })
       .catch((error) =>{
         console.log(error);
       });
     },
-    exportUserData: (param) =>{
+    exportUserData (param){
       let vue = this;
       axios.post('https://api.devx.kr/GotGan/v1/user_list.php', param)
       .then((response) =>{
         for(let index = 0; index < response.data.groups.length; index++){
-          vue.user_Groups.push(response.data.groups[index]);
+          vue.UserGroups.push(response.data.groups[index]);
         }
       })
       .catch((error) =>{
         console.log(error);
       });
     },
-    sendGroupAddData: (param, product) =>{
+    sendGroupAddData (param, product){
       let vue = this;
       axios.post('https://api.devx.kr/GotGan/v1/product_group_add.php', param)
       .then((response) =>{
@@ -404,7 +404,7 @@ export default {
         console.log(error);
       });
     },
-    sendProductAddData: (param) =>{
+    sendProductAddData (param){
       let vue = this;
       axios.post('https://api.devx.kr/GotGan/v1/product_add.php', param)
       .then((response) =>{
@@ -415,7 +415,7 @@ export default {
         console.log(error);
       });
     },
-    addProductButton: () =>{
+    addProductButton (){
       // 재고 추가 버튼
       let addGroupParams = new URLSearchParams();
 
@@ -461,11 +461,11 @@ export default {
         }
       }
     },
-    getCookie: (_name) =>{
+    getCookie (_name){
       let value = document.cookie.match(`(^|;) ? ${_name} =([^;]*)(;|$)`);
       return value? value[2] : null;
     },
-    test: (activeTab) =>{
+    test (activeTab){
       if(activeTab == "stockAddTab"){
         this.tabSelect = 0;
       }else if(activeTab == "groupAddTab"){
