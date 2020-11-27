@@ -186,19 +186,19 @@ export default {
     },
     sendAllowButton (){
       console.log(this.dialogInfo);
-      let vue = this;
+      // let vue = this;
       this.showAllowDialog = false;
       this.$EventBus.$emit('sendAllow', vue.dialogInfo.rent_index);
     },
     sendRejectButton (){
-      let vue = this;
+      // let vue = this;
       this.showRejectDialog = false;
       this.$EventBus.$emit('sendReject', vue.dialogInfo.rent_index);
     },
     sendReturnButton (){
-      let vue = this;
-      this.showReturnDialog = false;
-      this.$EventBus.$emit('sendReturn', vue.dialogInfo.rent_index);
+      // let vue = this;
+       this.showReturnDialog = false;
+       this.$EventBus.$emit('sendReturn', vue.dialogInfo.rent_index);
     }
   }
 };

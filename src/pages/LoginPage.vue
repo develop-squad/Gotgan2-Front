@@ -148,7 +148,7 @@ export default {
       let date = new Date();
       date.setTime(date.getTime() + 60 * 30 * 1000); // 30min
       //document.cookie = _name + '=' + _value + ';expires=' + date.toUTCString() + ';path=/';
-      document.cookie = `${_name} = ${_value};path=/`;
+      document.cookie = `${_name}=${_value};expires=${date.toUTCString()};path=/`;
     },
     getCookie(_name){
       let value = document.cookie.match(`(^|;) ?${_name} =([^;]*)(;|$)`);
@@ -170,11 +170,12 @@ export default {
   created() {
     if(this.getCookie("session") != null){
       let signInParams = new URLSearchParams();
-      let vue = this;
+      //let vue = this;
       signInParams.append("session", this.getCookie("session"));
       axios.post('https://api.devx.kr/GotGan/v1/login.php', signInParams)
       .then((response)=> {
-        vue.$emit("child",response.data);
+        //vue.$emit("child",response.data);
+        this.$emit("child",response.data);
         if(response.data.result == 0){
           //로그인 성공
           response.data.UserLevel == 2 ? router.push("/admin/stockdashboard") : router.push("/user");
