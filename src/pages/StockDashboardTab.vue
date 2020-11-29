@@ -1,120 +1,132 @@
 <template>
-
-
   <div class="content">
     <div class="md-layout">
-
       <div class="md-layout-item md-size-100">
         <md-card>
-
-          <md-card-header data-background-color="orange" v-if="!this._props.EnglishSwitchTab">
-            <h4 class="title">재고 현황</h4>
-            <p class="category">현재 재고 현황 보여주기</p>
-          </md-card-header>
-
-          <md-card-header data-background-color="orange" v-if="this._props.EnglishSwitchTab">
-            <h4 class="title">Stock</h4>
-            <p class="category">Show the present condition of stock</p>
+          <md-card-header data-background-color="orange">
+            <h4 class="title">
+              {{ this._props.englishSwitchTab ? "Stock" : "재고 현황" }}
+            </h4>
+            <p class="category">
+              {{
+                this._props.englishSwitchTab
+                  ? "Show the present condition of stock"
+                  : "재고 현황"
+              }}
+            </p>
           </md-card-header>
 
           <md-card-content>
-
-            <stock-table table-header-color="red" :userInfo_Table="UserInfoTab" :englishSwitch_Table="EnglishSwitchTab"></stock-table>
+            <stock-table
+              table-header-color="red"
+              :userInfo_Table="userInfoTab"
+              :englishSwitch_Table="englishSwitchTab"
+            ></stock-table>
           </md-card-content>
-
         </md-card>
       </div>
 
       <div class="md-layout-item md-size-50">
         <chart-card
-        :chart-data="dailySalesChart.data"
-        :chart-options="dailySalesChart.options"
-        chart-type="Line"
-        data-background-color="green">
-        <template slot="content"  v-if="!this._props.EnglishSwitchTab">
-          <h4 class="title">대여 현황</h4>
-          <p class="category">
-            <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> 전월 대비 증가
-          </p>
-        </template>
-        <template slot="content"  v-if="this._props.EnglishSwitchTab">
-          <h4 class="title">Rent Chart</h4>
-          <p class="category">
-            <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> Increase the previous month.
-          </p>
-        </template>
+          :chart-data="dailySalesChart.data"
+          :chart-options="dailySalesChart.options"
+          chart-type="Line"
+          data-background-color="green"
+        >
+          <template slot="content">
+            <h4 class="title">
+              {{ this._props.englishSwitchTab ? "Rent Chart" : "대여 현황" }}
+            </h4>
+            <p class="category">
+              <span class="text-success"
+                ><i class="fa fa-long-arrow-up"></i> 55%
+              </span>
+              {{
+                this._props.englishSwitchTab
+                  ? "Increase the previous month."
+                  : "전월 대비 증가"
+              }}
+            </p>
+          </template>
 
-        <template slot="footer">
-          <div class="stats"  v-if="!this._props.EnglishSwitchTab">
-            <md-icon>access_time</md-icon>
-            4분 전 업데이트
-          </div>
-          <div class="stats"  v-if="this._props.EnglishSwitchTab">
-            <md-icon>access_time</md-icon>
-            Updated 4 minutes ago
-          </div>
-        </template>
-      </chart-card>
-    </div>
+          <template slot="footer">
+            <div class="stats">
+              <md-icon>access_time</md-icon>
+              {{
+                this._props.englishSwitchTab
+                  ? "Updated 4 minutes ago"
+                  : "4분 전 업데이트"
+              }}
+            </div>
+          </template>
+        </chart-card>
+      </div>
 
-    <div class="md-layout-item md-size-50">
-      <chart-card
-      :chart-data="dailySalesChart2.data"
-      :chart-options="dailySalesChart2.options"
-      chart-type="Line"
-      data-background-color="red">
-      <template slot="content"  v-if="!this._props.EnglishSwitchTab">
-        <h4 class="title">반납 연체 현황</h4>
-        <p class="category">
-          <span class="text-success"><i class="fa fa-long-arrow-up"></i> 10% </span> 전월 대비 감소
-        </p>
-      </template>
-      <template slot="content"  v-if="this._props.EnglishSwitchTab">
-        <h4 class="title">Overdue Chart</h4>
-        <p class="category">
-          <span class="text-success"><i class="fa fa-long-arrow-up"></i> 10% </span> Decrease the previous month.
-        </p>
-      </template>
+      <div class="md-layout-item md-size-50">
+        <chart-card
+          :chart-data="dailySalesChart2.data"
+          :chart-options="dailySalesChart2.options"
+          chart-type="Line"
+          data-background-color="red"
+        >
+          <template slot="content">
+            <h4 class="title">
+              {{
+                this._props.englishSwitchTab
+                  ? "Overdue Chart"
+                  : "반납 연체 현황"
+              }}
+            </h4>
+            <p class="category">
+              <span class="text-success"
+                ><i class="fa fa-long-arrow-up"></i> 10%
+              </span>
+              {{
+                this._props.englishSwitchTab
+                  ? "Decrease the previous month."
+                  : "전월 대비 감소"
+              }}
+            </p>
+          </template>
 
-      <template slot="footer">
-        <div class="stats"  v-if="!this._props.EnglishSwitchTab">
-          <md-icon>access_time</md-icon>
-          Updated 4 minutes ago
-        </div>
-      </template>
-    </chart-card>
+          <template slot="footer">
+            <div class="stats">
+              <md-icon>access_time</md-icon>
+              {{
+                this._props.englishSwitchTab
+                  ? "Updated 4 minutes ago"
+                  : "4분 전 업데이트"
+              }}
+            </div>
+          </template>
+        </chart-card>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import {
-  StockTable,
-  ChartCard
-} from "@/components";
+import { StockTable, ChartCard } from "@/components";
 
 export default {
   props: {
-    UserInfoTab: Object,
-    EnglishSwitchTab: Boolean
+    userInfoTab: Object,
+    englishSwitchTab: Boolean,
   },
   components: {
     StockTable,
-    ChartCard
+    ChartCard,
   },
   data() {
     return {
       dailySalesChart: {
         data: {
-          labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'],
-          series: [
-            [12, 17, 7, 17, 23, 18, 38]
-          ]
+          labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"],
+          series: [[12, 17, 7, 17, 23, 18, 38]],
         },
         options: {
           lineSmooth: this.$Chartist.Interpolation.cardinal({
-            tension: 0
+            tension: 0,
           }),
           low: 0,
           high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
@@ -122,20 +134,18 @@ export default {
             top: 0,
             right: 0,
             bottom: 0,
-            left: 0
-          }
-        }
+            left: 0,
+          },
+        },
       },
       dailySalesChart2: {
         data: {
-          labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'],
-          series: [
-            [15, 12, 7, 5, 8, 10, 9]
-          ]
+          labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"],
+          series: [[15, 12, 7, 5, 8, 10, 9]],
         },
         options: {
           lineSmooth: this.$Chartist.Interpolation.cardinal({
-            tension: 0
+            tension: 0,
           }),
           low: 0,
           high: 20, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
@@ -143,15 +153,15 @@ export default {
             top: 0,
             right: 0,
             bottom: 0,
-            left: 0
-          }
-        }
-      }
+            left: 0,
+          },
+        },
+      },
     };
   },
-  created(){
+  created() {
     console.log("StockDashboardTab");
     console.log(this._props);
-  }
+  },
 };
 </script>
