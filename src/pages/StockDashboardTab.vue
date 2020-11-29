@@ -5,11 +5,11 @@
         <md-card>
           <md-card-header data-background-color="orange">
             <h4 class="title">
-              {{ this._props.englishSwitch_Tab ? "Stock" : "재고 현황" }}
+              {{ this._props.englishSwitchTab ? "Stock" : "재고 현황" }}
             </h4>
             <p class="category">
               {{
-                this._props.englishSwitch_Tab
+                this._props.englishSwitchTab
                   ? "Show the present condition of stock"
                   : "재고 현황"
               }}
@@ -19,8 +19,8 @@
           <md-card-content>
             <stock-table
               table-header-color="red"
-              :userInfo_Table="userInfo_Tab"
-              :englishSwitch_Table="englishSwitch_Tab"
+              :userInfo_Table="userInfoTab"
+              :englishSwitch_Table="englishSwitchTab"
             ></stock-table>
           </md-card-content>
         </md-card>
@@ -35,14 +35,14 @@
         >
           <template slot="content">
             <h4 class="title">
-              {{ this._props.englishSwitch_Tab ? "Rent Chart" : "대여 현황" }}
+              {{ this._props.englishSwitchTab ? "Rent Chart" : "대여 현황" }}
             </h4>
             <p class="category">
               <span class="text-success"
                 ><i class="fa fa-long-arrow-up"></i> 55%
               </span>
               {{
-                this._props.englishSwitch_Tab
+                this._props.englishSwitchTab
                   ? "Increase the previous month."
                   : "전월 대비 증가"
               }}
@@ -53,7 +53,7 @@
             <div class="stats">
               <md-icon>access_time</md-icon>
               {{
-                this._props.englishSwitch_Tab
+                this._props.englishSwitchTab
                   ? "Updated 4 minutes ago"
                   : "4분 전 업데이트"
               }}
@@ -72,7 +72,7 @@
           <template slot="content">
             <h4 class="title">
               {{
-                this._props.englishSwitch_Tab
+                this._props.englishSwitchTab
                   ? "Overdue Chart"
                   : "반납 연체 현황"
               }}
@@ -82,7 +82,7 @@
                 ><i class="fa fa-long-arrow-up"></i> 10%
               </span>
               {{
-                this._props.englishSwitch_Tab
+                this._props.englishSwitchTab
                   ? "Decrease the previous month."
                   : "전월 대비 감소"
               }}
@@ -93,7 +93,7 @@
             <div class="stats">
               <md-icon>access_time</md-icon>
               {{
-                this._props.englishSwitch_Tab
+                this._props.englishSwitchTab
                   ? "Updated 4 minutes ago"
                   : "4분 전 업데이트"
               }}
@@ -110,8 +110,8 @@ import { StockTable, ChartCard } from "@/components";
 
 export default {
   props: {
-    userInfo_Tab: Object,
-    englishSwitch_Tab: Boolean,
+    userInfoTab: Object,
+    englishSwitchTab: Boolean,
   },
   components: {
     StockTable,

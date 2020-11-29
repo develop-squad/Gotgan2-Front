@@ -46,7 +46,7 @@
           <md-card-content>
             <rent-status-table
               table-header-color="red"
-              :userInfo_Table="userInfo_Tab"
+              :userInfo_Table="UserInfoTab"
               :englishSwitch_Table="englishSwitch_Tab"
             ></rent-status-table>
           </md-card-content>
@@ -161,22 +161,22 @@ import { RentRequestTable, RentStatusTable } from "@/components";
 
 export default {
   created() {
-    var vue = this;
+    let vue = this;
 
-    this.$EventBus.$on("allowButton", function (params) {
+    this.$EventBus.$on("allowButton", (params) => {
       vue.showAllow(params);
     });
 
-    this.$EventBus.$on("rejectButton", function (params) {
+    this.$EventBus.$on("rejectButton", (params) => {
       vue.showReject(params);
     });
 
-    this.$EventBus.$on("returnButton", function (params) {
+    this.$EventBus.$on("returnButton", (params) => {
       vue.showReturn(params);
     });
   },
   props: {
-    userInfo_Tab: Object,
+    UserInfoTab: Object,
     englishSwitch_Tab: Boolean,
   },
   data() {
@@ -192,34 +192,34 @@ export default {
     RentStatusTable,
   },
   methods: {
-    showAllow: function (obj) {
+    showAllow(obj) {
       console.log(obj);
       this.dialogInfo = obj;
       this.showAllowDialog = true;
     },
-    showReject: function (obj) {
+    showReject(obj) {
       console.log(obj);
       this.dialogInfo = obj;
       this.showRejectDialog = true;
     },
-    showReturn: function (obj) {
+    showReturn(obj) {
       console.log(obj);
       this.dialogInfo = obj;
       this.showReturnDialog = true;
     },
-    sendAllowButton: function () {
+    sendAllowButton() {
       console.log(this.dialogInfo);
-      var vue = this;
+      // let vue = this;
       this.showAllowDialog = false;
       this.$EventBus.$emit("sendAllow", vue.dialogInfo.rent_index);
     },
-    sendRejectButton: function () {
-      var vue = this;
+    sendRejectButton() {
+      // let vue = this;
       this.showRejectDialog = false;
       this.$EventBus.$emit("sendReject", vue.dialogInfo.rent_index);
     },
-    sendReturnButton: function () {
-      var vue = this;
+    sendReturnButton() {
+      // let vue = this;
       this.showReturnDialog = false;
       this.$EventBus.$emit("sendReturn", vue.dialogInfo.rent_index);
     },
