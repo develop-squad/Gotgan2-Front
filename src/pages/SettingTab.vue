@@ -5,11 +5,9 @@
         <md-card class="md-card-plain">
           <md-card-header data-background-color="green">
             <h4 class="title">
-              {{
-                this._props.englishSwitch_Tab ? "Language Change" : "언어 변환"
-              }}
+              {{ this._props.englishSwitch ? "Language Change" : "언어 변환" }}
             </h4>
-            <md-switch v-model="englishSwitch" @change="switchLanguage"
+            <md-switch v-model="languageSwitch" @change="switchLanguage"
               >English</md-switch
             >
           </md-card-header>
@@ -22,18 +20,16 @@
 <script>
 export default {
   props: {
-    UserInfoTab: Object,
-    EnglishSwitchTab: Boolean,
+    englishSwitch: Boolean,
   },
   data() {
     return {
-      englishSwitch: false,
+      languageSwitch: false,
     };
   },
-  created() {
-    this.englishSwitch = this._props.EnglishSwitchTab;
+  mounted() {
+    this.languageSwitch = this._props.englishSwitch;
   },
-  updated() {},
   methods: {
     switchLanguage() {
       this.$EventBus.$emit("changeLanguage");
