@@ -6,11 +6,11 @@
         <md-card>
           <md-card-header data-background-color="red">
             <h4 class="title">
-              {{ this._props.englishSwitchTab ? "Stock Detail" : "재고 상세" }}
+              {{ this._props.englishSwitch ? "Stock Detail" : "재고 상세" }}
             </h4>
             <p class="category">
               {{
-                this._props.englishSwitchTab
+                this._props.englishSwitch
                   ? "Show about stock details"
                   : "상세한 재고 보여주기"
               }}
@@ -19,8 +19,7 @@
 
           <md-card-content>
             <stock-detail-table
-              :userInfoTable="userInfoTab"
-              :englishSwitchTable="englishSwitchTab"
+              :englishSwitch="englishSwitch"
             ></stock-detail-table>
           </md-card-content>
         </md-card>
@@ -30,35 +29,33 @@
           <md-card-header data-background-color="red">
             <h4 class="title">
               {{
-                this._props.englishSwitchTab
+                this._props.englishSwitch
                   ? "Stock / Group Add"
                   : "재고 / 그룹 추가"
               }}
             </h4>
             <p class="category">
-              {{ this._props.englishSwitchTab ? "Add" : "추가하기" }}
+              {{ this._props.englishSwitch ? "Add" : "추가하기" }}
             </p>
           </md-card-header>
 
           <md-card-content>
             <md-tabs
               md-dynamic-height
-              @md-changed="test($event)"
+              @md-changed="onChangeTab($event)"
               class="md-accent"
             >
               <md-tab
                 id="stockAddTab"
                 :md-label="
-                  this._props.englishSwitchTab ? 'Stock Add' : '재고 추가'
+                  this._props.englishSwitch ? 'Stock Add' : '재고 추가'
                 "
               >
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-small-size-100">
                     <md-field>
                       <label for="product_name">{{
-                        this._props.englishSwitchTab
-                          ? "Product Name"
-                          : "항목 이름"
+                        this._props.englishSwitch ? "Product Name" : "항목 이름"
                       }}</label>
                       <md-input
                         v-model="addProductName"
@@ -74,7 +71,7 @@
                   <div class="md-layout-item md-small-size-100">
                     <md-field>
                       <label for="product_group">{{
-                        this._props.englishSwitchTab ? "Group" : "그룹"
+                        this._props.englishSwitch ? "Group" : "그룹"
                       }}</label>
                       <md-select
                         v-model="addProductGroup"
@@ -85,12 +82,10 @@
                         required
                       >
                         <md-option value="group_add">{{
-                          this._props.englishSwitchTab
-                            ? "Add Group"
-                            : "그룹 추가"
+                          this._props.englishSwitch ? "Add Group" : "그룹 추가"
                         }}</md-option>
                         <md-option
-                          v-for="(item, index) in product_groups"
+                          v-for="(item, index) in productGroups"
                           v-bind:value="item.group_index"
                           :key="index"
                         >
@@ -105,7 +100,7 @@
                   <div class="md-layout-item md-small-size-100">
                     <md-field>
                       <label for="product_status">{{
-                        this._props.englishSwitchTab ? "Status" : "상태"
+                        this._props.englishSwitch ? "Status" : "상태"
                       }}</label>
                       <md-select
                         v-model="addProductStatus"
@@ -115,16 +110,16 @@
                         :disabled="sending"
                       >
                         <md-option value="0">{{
-                          this._props.englishSwitchTab ? "Normal" : "일반"
+                          this._props.englishSwitch ? "Normal" : "일반"
                         }}</md-option>
                         <md-option value="1">{{
-                          this._props.englishSwitchTab ? "Unusable" : "사용불가"
+                          this._props.englishSwitch ? "Unusable" : "사용불가"
                         }}</md-option>
                         <md-option value="2">{{
-                          this._props.englishSwitchTab ? "Failure" : "고장"
+                          this._props.englishSwitch ? "Failure" : "고장"
                         }}</md-option>
                         <md-option value="3">{{
-                          this._props.englishSwitchTab ? "Repair" : "수리중"
+                          this._props.englishSwitch ? "Repair" : "수리중"
                         }}</md-option>
                       </md-select>
                     </md-field>
@@ -133,7 +128,7 @@
                   <div class="md-layout-item md-small-size-100">
                     <md-field>
                       <label for="add_ProductOwner">{{
-                        this._props.englishSwitchTab ? "Attached" : "소속"
+                        this._props.englishSwitch ? "Attached" : "소속"
                       }}</label>
                       <md-select
                         v-model="addProductOwner"
@@ -143,7 +138,7 @@
                         :disabled="sending"
                       >
                         <md-option
-                          v-for="(item, index) in user_Groups"
+                          v-for="(item, index) in userGroups"
                           v-bind:value="item.group_index"
                           :key="index"
                         >
@@ -156,7 +151,7 @@
                   <div class="md-layout-item md-small-size-100">
                     <md-field>
                       <label for="product_barcode">{{
-                        this._props.englishSwitchTab ? "Barcode" : "바코드"
+                        this._props.englishSwitch ? "Barcode" : "바코드"
                       }}</label>
                       <md-input
                         v-model="addProductBarcode"
@@ -172,9 +167,7 @@
                   <div class="md-layout-item md-size-30 md-small-size-100">
                     <md-field>
                       <label for="product_group_name">{{
-                        this._props.englishSwitchTab
-                          ? "Group Name"
-                          : "그룹 이름"
+                        this._props.englishSwitch ? "Group Name" : "그룹 이름"
                       }}</label>
                       <md-input
                         v-model="addGroupName"
@@ -190,7 +183,7 @@
                   <div class="md-layout-item md-size-10 md-small-size-100">
                     <md-field>
                       <label for="group_rentable">{{
-                        this._props.englishSwitchTab
+                        this._props.englishSwitch
                           ? "Rentable"
                           : "대여 가능 여부"
                       }}</label>
@@ -203,10 +196,10 @@
                         required
                       >
                         <md-option value="0">{{
-                          this._props.englishSwitchTab ? "X" : "불가"
+                          this._props.englishSwitch ? "X" : "불가"
                         }}</md-option>
                         <md-option value="1">{{
-                          this._props.englishSwitchTab ? "O" : "가능"
+                          this._props.englishSwitch ? "O" : "가능"
                         }}</md-option>
                       </md-select>
                     </md-field>
@@ -215,7 +208,7 @@
                   <div class="md-layout-item md-size-30 md-small-size-100">
                     <md-field>
                       <label for="product_group_rentable_day">{{
-                        this._props.englishSwitchTab
+                        this._props.englishSwitch
                           ? "Rentable Day"
                           : "대여 가능 일수"
                       }}</label>
@@ -232,7 +225,7 @@
                   <div class="md-layout-item md-size-30 md-small-size-100">
                     <md-field>
                       <label for="product_group_priority">{{
-                        this._props.englishSwitchTab ? "Priority" : "중요도"
+                        this._props.englishSwitch ? "Priority" : "중요도"
                       }}</label>
                       <md-select
                         v-model="addGroupPriority"
@@ -242,13 +235,13 @@
                         :disabled="sending"
                       >
                         <md-option value="0">{{
-                          this._props.englishSwitchTab ? "Normal" : "일반항목"
+                          this._props.englishSwitch ? "Normal" : "일반항목"
                         }}</md-option>
                         <md-option value="1">{{
-                          this._props.englishSwitchTab ? "Focus" : "중요항목"
+                          this._props.englishSwitch ? "Focus" : "중요항목"
                         }}</md-option>
                         <md-option value="2">{{
-                          this._props.englishSwitchTab
+                          this._props.englishSwitch
                             ? "Intensive"
                             : "집중관리항목"
                         }}</md-option>
@@ -261,16 +254,14 @@
               <md-tab
                 id="groupAddTab"
                 :md-label="
-                  this._props.englishSwitchTab ? 'Group Add' : '그룹 추가'
+                  this._props.englishSwitch ? 'Group Add' : '그룹 추가'
                 "
               >
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-30 md-small-size-100">
                     <md-field>
                       <label for="product_group_name">{{
-                        this._props.englishSwitchTab
-                          ? "Group Name"
-                          : "그룹 이름"
+                        this._props.englishSwitch ? "Group Name" : "그룹 이름"
                       }}</label>
                       <md-input
                         v-model="addGroupName"
@@ -287,7 +278,7 @@
                   <div class="md-layout-item md-size-10 md-small-size-100">
                     <md-field>
                       <label for="group_rentable">{{
-                        this._props.englishSwitchTab
+                        this._props.englishSwitch
                           ? "Rentable"
                           : "대여 가능 여부"
                       }}</label>
@@ -301,10 +292,10 @@
                         required
                       >
                         <md-option value="0">{{
-                          this._props.englishSwitchTab ? "O" : "불가"
+                          this._props.englishSwitch ? "O" : "불가"
                         }}</md-option>
                         <md-option value="1">{{
-                          this._props.englishSwitchTab ? "X" : "가능"
+                          this._props.englishSwitch ? "X" : "가능"
                         }}</md-option>
                       </md-select>
                     </md-field>
@@ -313,7 +304,7 @@
                   <div class="md-layout-item md-size-30 md-small-size-100">
                     <md-field>
                       <label for="product_group_rentable_day">{{
-                        this._props.englishSwitchTab
+                        this._props.englishSwitch
                           ? "Rentable Day"
                           : "대여 가능 일수"
                       }}</label>
@@ -331,7 +322,7 @@
                   <div class="md-layout-item md-size-30 md-small-size-100">
                     <md-field>
                       <label for="product_group_priority">{{
-                        this._props.englishSwitchTab ? "Priority" : "중요도"
+                        this._props.englishSwitch ? "Priority" : "중요도"
                       }}</label>
                       <md-select
                         v-model="addGroupPriority"
@@ -342,13 +333,13 @@
                         :disabled="sending"
                       >
                         <md-option value="0">{{
-                          this._props.englishSwitchTab ? "Normal" : "일반항목"
+                          this._props.englishSwitch ? "Normal" : "일반항목"
                         }}</md-option>
                         <md-option value="1">{{
-                          this._props.englishSwitchTab ? "Focus" : "중요항목"
+                          this._props.englishSwitch ? "Focus" : "중요항목"
                         }}</md-option>
                         <md-option value="2">{{
-                          this._props.englishSwitchTab
+                          this._props.englishSwitch
                             ? "Intensive"
                             : "집중관리항목"
                         }}</md-option>
@@ -364,9 +355,9 @@
                 type="submit"
                 class="md-primary"
                 :disabled="sending"
-                @click="addProductButton()"
+                @click="onClickaddProductButton"
                 >{{
-                  this._props.englishSwitchTab ? "Submit" : "재고 추가"
+                  this._props.englishSwitch ? "Submit" : "재고 추가"
                 }}</md-button
               >
             </md-card-actions>
@@ -386,7 +377,7 @@ import { StockDetailTable } from "@/components/";
 export default {
   props: {
     userInfo_Tab: Object,
-    englishSwitchTab: Boolean,
+    englishSwitch: Boolean,
   },
   components: {
     StockDetailTable,
@@ -409,31 +400,35 @@ export default {
       tabSelect: 0,
     };
   },
-  created() {
-    params.append("session", this.getCookie("session"));
-    this.exportProductData(params);
-    this.exportUserData(params);
+  mounted() {
+    let getParams = new URLSearchParams();
+    getParams.append("session", this.getSession());
+    this.getProductData(getParams);
+    this.getUserData(getParams);
   },
   methods: {
-    exportProductData(param) {
+    getSession() {
+      return sessionStorage.getItem("session");
+    },
+    getProductData(param) {
       axios
         .post("https://api.devx.kr/GotGan/v1/product_overview.php", param)
         .then((response) => {
-          for (var x = 0; x < response.data.groups.length; x++) {
-            this.productGroups.push(response.data.groups[x]);
-          }
+          response.data.groups.forEach((el) => {
+            this.productGroups.push(el);
+          });
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    exportUserData(param) {
+    getUserData(param) {
       axios
         .post("https://api.devx.kr/GotGan/v1/user_list.php", param)
         .then((response) => {
-          for (var x = 0; x < response.data.groups.length; x++) {
-            this.userGroups.push(response.data.groups[x]);
-          }
+          response.data.groups.forEach((el) => {
+            this.userGroups.push(el);
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -445,16 +440,14 @@ export default {
         .then((response) => {
           if (product != 0) {
             product.product_group = response.data.product_group_index;
-            var array = new Array();
-            array.push(product);
-            var addProductParams = new URLSearchParams();
-            addProductParams.append("session", this.getCookie("session"));
-            addProductParams.append("products", JSON.stringify(array));
+            let addProductParams = new URLSearchParams();
+            addProductParams.append("session", this.getSession());
+            addProductParams.append("products", JSON.stringify([product]));
 
             this.sendProductAddData(addProductParams);
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -462,71 +455,47 @@ export default {
       axios
         .post("https://api.devx.kr/GotGan/v1/product_add.php", param)
         .then((response) => {
-          // 새로고침 말고 테이블만 로드 필요
           location.reload();
+          alert("상품 등록이 완료되었습니다.")
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
     },
-    addProductButton() {
-      var addGroupParams = new URLSearchParams();
+    onClickaddProductButton() {
+      let addGroupParams = new URLSearchParams();
+
+      const sessionCode = this.getSession();
+
+      addGroupParams.append("session", sessionCode);
+      addGroupParams.append("product_group_name", this.addGroupName);
+      this.addGroupRentableDay == "" ? (this.addGroupRentableDay = 0) : 0;
+      addGroupParams.append("product_group_rentable", this.addGroupRentableDay);
+      addGroupParams.append("product_group_priority", this.addGroupPriority);
 
       if (this.tabSelect) {
-        addGroupParams.append("session", this.getCookie("session"));
-        addGroupParams.append("product_group_name", this.addGroupName);
-        this.addGroupRentableDay == "" ? (this.addGroupRentableDay = 0) : 0;
-        addGroupParams.append(
-          "product_group_rentable",
-          this.addGroupRentableDay
-        );
-        addGroupParams.append("product_group_priority", this.addGroupPriority);
-
         this.sendGroupAddData(addGroupParams, 0);
       } else {
-        // 재고 추가
-        var addProductParams = new URLSearchParams();
-
-        var array = new Array();
-
-        var obj = {
-          productGroup: this.addProductGroup,
-          productName: this.addProductName,
-          productStatus: this.addProductStatus,
-          productOwner: this.addProductOwner,
-          productBarcode: this.addProductBarcode,
+        let productInfo = {
+          product_group: this.addProductGroup,
+          product_name: this.addProductName,
+          product_status: this.addProductStatus,
+          product_owner: this.addProductOwner,
+          product_barcode: this.addProductBarcode,
         };
 
-        if (this.add_ProductGroup == "group_add") {
-          // 재고 + 그룹 추가
-          addGroupParams.append("session", this.getCookie("session"));
-          addGroupParams.append("product_group_name", this.addGroupName);
-          this.addGroupRentableDay == "" ? (this.addGroupRentableDay = 0) : 0;
-          addGroupParams.append(
-            "product_group_rentable",
-            this.addGroupRentableDay
-          );
-          addGroupParams.append(
-            "product_group_priority",
-            this.addGroupPriority
-          );
-
-          this.sendGroupAddData(addGroupParams, obj);
+        if (this.addProductGroup == "group_add") {
+          this.sendGroupAddData(addGroupParams, productInfo);
         } else {
-          // 재고만 추가
-          array.push(obj);
-          addProductParams.append("session", this.getCookie("session"));
-          addProductParams.append("products", JSON.stringify(array));
+          let addProductParams = new URLSearchParams();
+          addProductParams.append("session", sessionCode);
+          addProductParams.append("products", JSON.stringify([productInfo]));
 
           this.sendProductAddData(addProductParams);
         }
       }
     },
-    getCookie(_name) {
-      var value = document.cookie.match("(^|;) ?" + _name + "=([^;]*)(;|$)");
-      return value ? value[2] : null;
-    },
-    test(activeTab) {
+    onChangeTab(activeTab) {
       if (activeTab == "stockAddTab") {
         this.tabSelect = 0;
       } else if (activeTab == "groupAddTab") {
@@ -537,9 +506,7 @@ export default {
     },
   },
   updated() {
-    this.addProductGroup == "group_add"
-      ? (this.showGroupAdd = true)
-      : (this.showGroupAdd = false);
+    this.showGroupAdd = this.addProductGroup == "group_add";
   },
 };
 </script>
