@@ -22,7 +22,7 @@
                 <label for="userID">ID</label>
                 <md-input
                   name="userID"
-                  v-model="UserID"
+                  v-model="userID"
                   maxlength="20"
                   required
                 />
@@ -32,7 +32,7 @@
                 <label for="userPW">Password</label>
                 <md-input
                   name="userPW"
-                  v-model="UserPassword"
+                  v-model="userPassword"
                   type="password"
                   maxlength="20"
                   required
@@ -47,7 +47,7 @@
                     <label for="userName">이름</label>
                     <md-input
                       name="userName"
-                      v-model="UserName"
+                      v-model="userName"
                       maxlength="20"
                       required
                     />
@@ -59,7 +59,7 @@
                     <label for="userEmail">이메일</label>
                     <md-input
                       name="userEmail"
-                      v-model="UserEmail"
+                      v-model="userEmail"
                       maxlength="20"
                     />
                   </md-field>
@@ -68,7 +68,7 @@
                     <label for="user_Phone">전화번호</label>
                     <md-input
                       name="user_Phone"
-                      v-model="UserPhone"
+                      v-model="userPhone"
                       maxlength="20"
                     />
                   </md-field>
@@ -77,22 +77,21 @@
                     <label for="userGroup">유저그룹</label>
                     <md-input
                       name="userGroup"
-                      v-model="UserGroup"
+                      v-model="userGroup"
                       maxlength="20"
                     />
                   </md-field>
 
                   <md-field :md-counter="false" v-if="showCard">
                     <label for="userSID">학번</label>
-                    <md-input name="userSID" v-model="UserSID" maxlength="20" />
+                    <md-input name="userSID" v-model="userSID" maxlength="20" />
                   </md-field>
                 </div>
               </transition-group>
               <div class="buttonSpace">
                 <md-button
                   class="md-raised"
-                  v-on:click="signIn"
-                  :to="link"
+                  v-on:click="onClickSignInButton"
                   v-if="showCard == 0"
                   >Sign in</md-button
                 >
@@ -122,65 +121,66 @@ import router from "../main.js";
 import axios from "axios";
 
 export default {
-  props: {
-    _userInfo: Object,
-  },
   data() {
     return {
-      UserID: "",
-      UserPassword: "",
-      link: "",
+      userID: "",
+      userPassword: "",
       hasMessages: false,
       showCard: 0,
-      UserLevel: 0,
-      UserName: "",
-      UserGroup: 0,
-      UserSID: "",
-      UserEmail: "",
-      UserPhone: "",
+      userLevel: 0,
+      userName: "",
+      userGroup: 0,
+      userSID: "",
+      userEmail: "",
+      userPhone: "",
     };
   },
+  mounted() {
+    this.loginCheck();
+  },
   methods: {
-    signIn() {
-      if (this.UserID == "" || this.UserPassword == "") {
+    onClickSignInButton() {
+      if (this.userID == "" || this.userPassword == "") {
         this.hasMessages = true;
       } else {
         let signInParams = new URLSearchParams();
-        let vue = this;
-        signInParams.append("user_id", this.UserID);
-        signInParams.append("user_pw", this.UserPassword);
 
-        axios
-          .post("https://api.devx.kr/GotGan/v1/login.php", signInParams)
-          .then((response) => {
-            vue.$emit("child", response.data);
-            if (response.data.result == 0) {
-              //로그인 성공
-              vue.setCookie("session", response.data.session);
+        signInParams.append("user_id", this.userID);
+        signInParams.append("user_pw", this.userPassword);
 
-              response.data.UserLevel == 2
-                ? router.push("/admin/stockdashboard")
-                : router.push("/user");
-            } else {
-              // 로그인 실패
-              alert("ERROR");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        this.signIn(signInParams);
       }
+    },
+    signIn(signInParams) {
+      axios
+        .post("https://api.devx.kr/GotGan/v1/login.php", signInParams)
+        .then((response) => {
+          this.$emit("child", response.data);
+
+          if (response.data.result == 0) {
+            sessionStorage.setItem("session", response.data.session);
+
+            router.push(
+              response.data.user_level == 2 ? "/admin/stockdashboard" : "/user"
+            );
+          } else {
+            alert("입력된 정보가 잘못되었습니다.");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     signUp() {
       let signUpParams = new URLSearchParams();
-      signUpParams.append("user_id", this.UserID);
-      signUpParams.append("user_pw", this.UserPassword);
-      signUpParams.append("user_level", this.UserLevel);
-      signUpParams.append("user_name", this.UserName);
-      signUpParams.append("user_email", this.UserEmail);
-      signUpParams.append("user_phone", this.UserPhone);
-      signUpParams.append("user_group", this.UserGroup);
-      signUpParams.append("user_sid", this.UserSID);
+      signUpParams.append("user_id", this.userID);
+      signUpParams.append("user_pw", this.userPassword);
+      signUpParams.append("user_level", this.userLevel);
+      signUpParams.append("user_name", this.userName);
+      signUpParams.append("user_email", this.userEmail);
+      signUpParams.append("user_phone", this.userPhone);
+      signUpParams.append("user_group", this.userGroup);
+      signUpParams.append("user_sid", this.userSID);
 
       axios
         .post("https://api.devx.kr/GotGan/v1/login.php", signUpParams)
@@ -191,15 +191,16 @@ export default {
           console.log(error);
         });
     },
-    setCookie(_name, _value) {
-      let date = new Date();
-      date.setTime(date.getTime() + 60 * 30 * 1000); // 30min
-      //document.cookie = _name + '=' + _value + ';expires=' + date.toUTCString() + ';path=/';
-      document.cookie = `${_name}=${_value};expires=${date.toUTCString()};path=/`;
+    getSession() {
+      return sessionStorage.getItem("session");
     },
-    getCookie(_name) {
-      let value = document.cookie.match(`(^|;) ?${_name} =([^;]*)(;|$)`);
-      return value ? value[2] : null;
+    loginCheck() {
+      const sessionData = this.getSession();
+      if (sessionData != null) {
+        let signInParams = new URLSearchParams();
+        signInParams.append("session", sessionData);
+        this.signIn(signInParams);
+      }
     },
   },
   computed: {
@@ -210,30 +211,8 @@ export default {
     },
   },
   updated() {
-    if (this.UserID != "") {
+    if (this.userID != "") {
       this.hasMessages = false;
-    }
-  },
-  created() {
-    if (this.getCookie("session") != null) {
-      let signInParams = new URLSearchParams();
-      //let vue = this;
-      signInParams.append("session", this.getCookie("session"));
-      axios
-        .post("https://api.devx.kr/GotGan/v1/login.php", signInParams)
-        .then((response) => {
-          //vue.$emit("child",response.data);
-          this.$emit("child", response.data);
-          if (response.data.result == 0) {
-            //로그인 성공
-            response.data.UserLevel == 2
-              ? router.push("/admin/stockdashboard")
-              : router.push("/user");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
     }
   },
 };
