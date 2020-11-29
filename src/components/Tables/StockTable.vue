@@ -3,25 +3,25 @@
     <md-table :table-header-color="tableHeaderColor">
       <md-table-row>
         <md-table-head>{{
-          this._props.englishSwitch_Table ? "Product" : "종류"
+          this._props.englishSwitch ? "Product" : "종류"
         }}</md-table-head>
         <md-table-head>{{
-          this._props.englishSwitch_Table ? "Rentable" : "대여 가능"
+          this._props.englishSwitch ? "Rentable" : "대여 가능"
         }}</md-table-head>
         <md-table-head>{{
-          this._props.englishSwitch_Table ? "Unusable" : "사용 불가"
+          this._props.englishSwitch ? "Unusable" : "사용 불가"
         }}</md-table-head>
         <md-table-head>{{
-          this._props.englishSwitch_Table ? "Failure" : "고장"
+          this._props.englishSwitch ? "Failure" : "고장"
         }}</md-table-head>
         <md-table-head>{{
-          this._props.englishSwitch_Table ? "Repair" : "수리중"
+          this._props.englishSwitch ? "Repair" : "수리중"
         }}</md-table-head>
         <md-table-head>{{
-          this._props.englishSwitch_Table ? "Renting" : "대여중"
+          this._props.englishSwitch ? "Renting" : "대여중"
         }}</md-table-head>
         <md-table-head>{{
-          this._props.englishSwitch_Table ? "Total" : "총 갯수"
+          this._props.englishSwitch ? "Total" : "총 갯수"
         }}</md-table-head>
       </md-table-row>
 
@@ -55,43 +55,37 @@ export default {
       type: String,
       default: "",
     },
-    userInfo_Table: Object,
-    englishSwitch_Table: Boolean,
+    englishSwitch: Boolean,
   },
   data() {
     return {
       productGroup: [],
     };
   },
-  created() {
-
+  mounted() {
     this.exportData();
   },
   methods: {
-    exportData: function () {
-      var productParams = new URLSearchParams();
-      var vue = this;
-
-      productParams.append("session", vue.getCookie("session"));
+    exportData() {
+      let productParams = new URLSearchParams();
+      productParams.append("session", this.getSession());
 
       axios
         .post(
           "https://api.devx.kr/GotGan/v1/product_overview.php",
           productParams
         )
-        .then(function (response) {
-          for (var x = 0; x < Object.keys(response.data.groups).length; x++) {
-            vue.productGroup.push(response.data.groups[x]);
-          }
-          console.log(vue.productGroup);
+        .then((response) => {
+          response.data.groups.forEach((el) => {
+            this.productGroup.push(el);
+          });
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
     },
-    getCookie: function (_name) {
-      var value = document.cookie.match("(^|;) ?" + _name + "=([^;]*)(;|$)");
-      return value ? value[2] : null;
+    getSession() {
+      return sessionStorage.getItem("session");
     },
   },
 };
