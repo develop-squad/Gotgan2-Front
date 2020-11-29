@@ -5,23 +5,18 @@
         <md-card>
           <md-card-header data-background-color="green">
             <h4 class="title">
-              {{
-                this._props.englishSwitch_Tab ? "User Management" : "유저 관리"
-              }}
+              {{ this._props.englishSwitch ? "User Management" : "유저 관리" }}
             </h4>
             <p class="category">
               {{
-                this._props.englishSwitch_Tab
+                this._props.englishSwitch
                   ? "Card about user management"
                   : "유저 관리 관련 카드"
               }}
             </p>
           </md-card-header>
           <md-card-content>
-            <user-table
-              :userInfo_Table="userInfo_Tab"
-              :englishSwitch_Table="englishSwitch_Tab"
-            ></user-table>
+            <user-table :englishSwitch="englishSwitch"></user-table>
           </md-card-content>
         </md-card>
       </div>
@@ -34,15 +29,10 @@ import { UserTable } from "@/components";
 
 export default {
   props: {
-    userInfo_Tab: Object,
-    englishSwitch_Tab: Boolean,
+    englishSwitch: Boolean,
   },
   components: {
     UserTable,
-  },
-  created() {
-    console.log("UserManagementTab");
-    console.log(this._props.userInfo_Tab);
   },
 };
 </script>
