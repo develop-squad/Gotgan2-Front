@@ -1,7 +1,6 @@
 <template>
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
-    <side-bar v-if="user_Level == 2" :englishSwitch_Side="englishSwitch">
-      <mobile-menu slot="content"></mobile-menu>
+    <side-bar  :englishSwitch="englishSwitch">
       <sidebar-link to="/admin/stockDashboard">
         <md-icon>view_module</md-icon>
         <p>{{ englishSwitch ? "Stock Dashboard" : "재고 대시보드" }}</p>
@@ -35,24 +34,13 @@
       </sidebar-link>
     </side-bar>
 
-    <side-bar v-if="user_Level == 0">
-      <mobile-menu slot="content"></mobile-menu>
-      <sidebar-link to="/user">
-        <md-icon>view_module</md-icon>
-        <p>{{ englishSwitch ? "User Dashboard" : "사용자 페이지" }}</p>
-      </sidebar-link>
-    </side-bar>
-
     <div class="main-panel">
       <top-navbar
-        :userName_Top="userName"
-        :englishSwitch_Top="englishSwitch"
+        :userName="userName"
+        :englishSwitch="englishSwitch"
       ></top-navbar>
 
-      <dashboard-content
-        :userInfo_Content="userInfo"
-        :englishSwitch_Content="englishSwitch"
-      ></dashboard-content>
+      <dashboard-content :englishSwitch="englishSwitch"></dashboard-content>
 
       <content-footer v-if="!$route.meta.hideFooter"></content-footer>
     </div>
@@ -66,120 +54,87 @@ import axios from "axios";
 import TopNavbar from "./TopNavbar.vue";
 import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./Content.vue";
-import MobileMenu from "@/pages/Layout/MobileMenu.vue";
 
 export default {
-  props: {
-    _userInfo: Object,
-  },
   components: {
     TopNavbar,
     DashboardContent,
-    ContentFooter,
-    MobileMenu,
+    ContentFooter
   },
   data() {
     return {
-      userInfo: {},
-      user_Level: 0,
-      session: "",
       userName: "",
       rentNum: 0,
       showNum: 0,
       englishSwitch: false,
     };
   },
-  created() {
-    console.log("DashboardLayout");
-    console.log(this._props._userInfo);
-
-    this.session = this.getCookie("session");
+  mounted() {
+    const sessionCode = this.getSession();
 
     this.$EventBus.$on("updateSideBarBadge", () => {
-      this.updateData();
+      this.updateData(sessionCode);
     });
 
     this.$EventBus.$on("changeLanguage", () => {
       this.changeLanguage();
     });
 
-    if (Object.keys(this._props._userInfo).length == 0) {
-      this.login();
-    } else {
-      this.user_Level = this._props._userInfo.user_level;
-      this.userInfo = this._props._userInfo;
-      this.userName = this._props._userInfo.user_name;
+    if (sessionCode) {
+      this.loginCheck(sessionCode);
     }
 
-    this.updateData();
+    this.updateData(sessionCode);
   },
   methods: {
-    getCookie: function (_name) {
-      var value = document.cookie.match("(^|;) ?" + _name + "=([^;]*)(;|$)");
-      return value ? value[2] : null;
+    getSession() {
+      return sessionStorage.getItem("session");
     },
-    login: function () {
-      var signInParams = new URLSearchParams();
-      var vue = this;
-      signInParams.append("session", this.session);
+    loginCheck(sessionCode) {
+      let signInParams = new URLSearchParams();
+      signInParams.append("session", sessionCode);
 
       axios
         .post("https://api.devx.kr/GotGan/v1/login.php", signInParams)
-        .then(function (response) {
+        .then((response) => {
           if (response.data.result == 0) {
-            // 로그인 성공
-            vue.user_Level = response.data.user_level;
-            vue.userInfo = {
-              error: response.data.error,
-              result: response.data.result,
-              session: response.data.session,
-              user_block: response.data.user_block,
-              user_created: response.data.user_created,
-              user_email: response.data.user_email,
-              user_group_index: response.data.user_group_index,
-              user_group_name: response.data.user_group_name,
-              user_id: response.data.user_id,
-              user_index: response.data.user_index,
-              user_level: response.data.user_level,
-              user_name: response.data.user_name,
-              user_phone: response.data.user_phone,
-              user_sid: response.data.user_sid,
-            };
-            vue.userName = response.data.user_name;
+            this.userName = response.data.user_name;
           } else {
             // 로그인 실패
             alert("다시 로그인 하시오.");
             router.push("/");
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
     },
-    updateData: function () {
-      var params = new URLSearchParams();
-      var vue = this;
-      params.append("session", this.session);
+    updateData(sessionCode) {
+      let params = new URLSearchParams();
+      params.append("session", sessionCode);
 
       axios
         .post("https://api.devx.kr/GotGan/v1/rent_list.php", params)
-        .then(function (response) {
-          vue.rentNum = 0;
-          for (var i in response.data.rents) {
-            response.data.rents[i].rent_status == 1 ? vue.rentNum++ : 0;
-          }
-          vue.showNum != vue.rentNum ? (vue.showNum = vue.rentNum) : 0;
+        .then((response) => {
+          this.rentNum = 0;
+
+          response.data.rents.forEach(el => {
+            el.rent_status == 1 ? this.rentNum++ : 0;
+          })
+
+          this.showNum != this.rentNum ? (this.showNum = this.rentNum) : 0;
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
     },
-    changeLanguage: function () {
+    changeLanguage() {
       this.englishSwitch = !this.englishSwitch;
     },
   },
   updated() {
-    this.updateData();
+    const sessionCode = this.getSession();
+    this.updateData(sessionCode);
     this.$EventBus.$emit("changeTitle");
   },
 };
