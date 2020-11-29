@@ -8,8 +8,6 @@ import RentDashboardTab from "@/pages/RentDashboardTab.vue";
 import UserManagementTab from "@/pages/UserManagementTab.vue";
 import SettingTab from "@/pages/SettingTab.vue";
 
-import UserDashboardTab from "@/pages/UserDashboardTab.vue";
-
 const routes = [
   {
     path: "/",
@@ -47,17 +45,6 @@ const routes = [
     ]
 
   },
-  {
-    path: "/user",
-    component: DashboardLayout,
-    children: [
-      {
-        path: "",
-        name: "사용자 대시보드",
-        component: UserDashboardTab
-      }
-    ]
-  }
 ];
 
 export default routes;
