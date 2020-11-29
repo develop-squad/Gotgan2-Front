@@ -240,12 +240,9 @@ export default {
 </script>
 
 <style>
-/* xlarge */
 @media (min-width: 1920px) {
   .card {
     margin: 8rem 0 !important;
-  }
-  .loginText {
   }
 }
 
@@ -280,8 +277,8 @@ export default {
 .slide-fade-leave-active {
   transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+.slide-fade-enter,
+.slide-fade-leave-to {
   transform: translateX(10px);
   opacity: 0;
 }

@@ -10,10 +10,7 @@
 }
 
 .fade-enter,
-  .fade-leave-to
-    /* .fade-leave-active in <2.1.8 */
-
- {
+.fade-leave-to {
   opacity: 0;
 }
 </style>
@@ -23,15 +20,5 @@ export default {
     userInfo_Content: Object,
     englishSwitch_Content: Boolean
   },
-  data(){
-    return{
-    };
-  },
-  created(){
-    console.log("content");
-    console.log(this._props.userInfo_Content);
-    console.log(this._props.englishSwitch_Content);
-
-  }
 };
 </script>

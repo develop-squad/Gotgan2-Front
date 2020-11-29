@@ -155,7 +155,6 @@ export default {
         });
     },
   },
-  updated() {},
 };
 </script>
 

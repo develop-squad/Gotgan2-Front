@@ -53,8 +53,7 @@ export default {
     };
   },
   created() {
-    console.log("UserTable");
-    console.log(this._props.userInfo_Table);
+    this.getUserList();
 
     this.exportData();
   },

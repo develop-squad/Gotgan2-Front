@@ -64,8 +64,6 @@ export default {
     };
   },
   created() {
-    console.log("StockTable");
-    console.log(this._props.userInfo_Table);
 
     this.exportData();
   },

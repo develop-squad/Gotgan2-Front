@@ -136,6 +136,5 @@ export default {
       return value ? value[2] : null;
     },
   },
-  updated() {},
 };
 </script>

@@ -32,7 +32,6 @@ export default {
   },
   created() {
     this.englishSwitch = this._props.EnglishSwitchTab;
-    console.log(this._props.EnglishSwitchTab);
   },
   updated() {},
   methods: {
