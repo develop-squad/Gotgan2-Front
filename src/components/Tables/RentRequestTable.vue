@@ -53,8 +53,6 @@
 <script>
 import axios from "axios";
 
-var params = new URLSearchParams();
-
 export default {
   name: "simple-table",
   props: {

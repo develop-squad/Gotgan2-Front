@@ -1,18 +1,7 @@
 <template>
-  <router-view :_userInfo="userInfo" @child="parents"></router-view>
+  <router-view></router-view>
 </template>
 
 <script>
-export default {
-  data(){
-    return{
-      userInfo: {}
-    }
-  },
-  methods:{
-    parents(params){
-      this.userInfo = params;
-    }
-  }
-};
+export default {};
 </script>

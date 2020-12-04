@@ -371,7 +371,6 @@
 <script>
 import axios from "axios";
 
-var params = new URLSearchParams();
 import { StockDetailTable } from "@/components/";
 
 export default {
