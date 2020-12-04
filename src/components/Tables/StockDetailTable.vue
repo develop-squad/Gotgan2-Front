@@ -146,7 +146,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosPost from "../../globalFunction.js";
 
 export default {
   name: "stock-detail-table",
@@ -177,39 +177,36 @@ export default {
       let productParams = new URLSearchParams();
       productParams.append("session", this.getSession());
 
-      axios
-        .post(
-          "https://api.devx.kr/GotGan/v1/product_overview.php",
-          productParams
-        )
-        .then((response) => {
-          response.data.groups.forEach((el) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/product_overview.php",
+        productParams,
+        (res) => {
+          res.data.groups.forEach((el) => {
             el.products = [];
             el.showTable = false;
             this.productGroup.push(el);
           });
 
           this.getProductOverview(productParams);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     getProductOverview(productParams) {
-      axios
-        .post("https://api.devx.kr/GotGan/v1/product_list.php", productParams)
-        .then((response) => {
-          response.data.products.forEach((e) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/product_list.php",
+        productParams,
+        (res) => {
+          res.data.products.forEach((e) => {
             this.productGroup.forEach((f) => {
               if (f.group_index == e.product_group_index) {
                 f.products.push(e);
               }
             });
           });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     toggle(group) {
       group.showTable = !group.showTable;
@@ -223,23 +220,23 @@ export default {
       logParams.append("session", this.getSession());
       logParams.append("log_product", product.product_index);
 
-      axios
-        .post("https://api.devx.kr/GotGan/v1/log_list.php", logParams)
-        .then((response) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/log_list.php",
+        logParams,
+        (res) => {
           this.logList = [];
-          response.data.logs.forEach((el) => {
+          res.data.logs.forEach((el) => {
             let logInfo = {
               time: el.log_time,
-              type: response.data.types[el.log_type - 1].type_name,
+              type: res.data.types[el.log_type - 1].type_name,
               userName: el.log_user_name,
               userID: el.log_user_id,
             };
             this.logList.push(logInfo);
           });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
   },
 };

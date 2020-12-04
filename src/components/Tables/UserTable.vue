@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosPost from "../../globalFunction.js";
 
 export default {
   name: "stock-table",
@@ -59,16 +59,16 @@ export default {
       let userParams = new URLSearchParams();
       userParams.append("session", this.getSession());
 
-      axios
-        .post("https://api.devx.kr/GotGan/v1/user_list.php", userParams)
-        .then((response) => {
-          response.data.users.forEach((el) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/user_list.php",
+        userParams,
+        (res) => {
+          res.data.users.forEach((el) => {
             this.userList.push(el);
           });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     getSession() {
       return sessionStorage.getItem("session");

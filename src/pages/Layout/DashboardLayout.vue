@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
-    <side-bar  :englishSwitch="englishSwitch">
+    <side-bar :englishSwitch="englishSwitch">
       <sidebar-link to="/admin/stockDashboard">
         <md-icon>view_module</md-icon>
         <p>{{ englishSwitch ? "Stock Dashboard" : "재고 대시보드" }}</p>
@@ -48,8 +48,8 @@
 </template>
 
 <script>
+import axiosPost from "../../globalFunction.js";
 import router from "../../main.js";
-import axios from "axios";
 
 import TopNavbar from "./TopNavbar.vue";
 import ContentFooter from "./ContentFooter.vue";
@@ -59,7 +59,7 @@ export default {
   components: {
     TopNavbar,
     DashboardContent,
-    ContentFooter
+    ContentFooter,
   },
   data() {
     return {
@@ -94,39 +94,39 @@ export default {
       let signInParams = new URLSearchParams();
       signInParams.append("session", sessionCode);
 
-      axios
-        .post("https://api.devx.kr/GotGan/v1/login.php", signInParams)
-        .then((response) => {
-          if (response.data.result == 0) {
-            this.userName = response.data.user_name;
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/login.php",
+        signInParams,
+        (res) => {
+          if (res.data.result == 0) {
+            this.userName = res.data.user_name;
           } else {
             // 로그인 실패
             alert("다시 로그인 하시오.");
             router.push("/");
           }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     updateData(sessionCode) {
       let params = new URLSearchParams();
       params.append("session", sessionCode);
 
-      axios
-        .post("https://api.devx.kr/GotGan/v1/rent_list.php", params)
-        .then((response) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/rent_list.php",
+        params,
+        (res) => {
           this.rentNum = 0;
 
-          response.data.rents.forEach(el => {
+          res.data.rents.forEach((el) => {
             el.rent_status == 1 ? this.rentNum++ : 0;
-          })
+          });
 
           this.showNum != this.rentNum ? (this.showNum = this.rentNum) : 0;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     changeLanguage() {
       this.englishSwitch = !this.englishSwitch;

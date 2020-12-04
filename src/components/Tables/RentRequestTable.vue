@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosPost from "../../globalFunction.js";
 
 export default {
   name: "simple-table",
@@ -85,65 +85,64 @@ export default {
       return sessionStorage.getItem("session");
     },
     getRentRequest() {
-      var rentRequestParams = new URLSearchParams();
+      let rentRequestParams = new URLSearchParams();
       rentRequestParams.append("session", this.getSession());
 
       this.rentRequestNum = 0;
 
-      axios
-        .post("https://api.devx.kr/GotGan/v1/rent_list.php", rentRequestParams)
-        .then((response) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/rent_list.php",
+        rentRequestParams,
+        (res) => {
           this.rentList = [];
 
-          response.data.rents
+          res.data.rents
             .filter((el) => el.rent_status == 1)
             .forEach((el) => {
               this.rentList.push(el);
               this.rentRequestNum++;
             });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     allowButton(obj) {
       this.$EventBus.$emit("allowButton", obj);
     },
     sendAllow(index) {
-      var vue = this;
-      var allowParams = new URLSearchParams();
+      let allowParams = new URLSearchParams();
       allowParams.append("session", this.getSession());
       allowParams.append("rent_index", index);
 
-      axios
-        .post("https://api.devx.kr/GotGan/v1/rent_allow.php", allowParams)
-        .then((response) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/rent_allow.php",
+        allowParams,
+        (res) => {
           this.getRentRequest();
           this.$EventBus.$emit("updateRentStatusTable");
           this.$EventBus.$emit("updateSideBarBadge");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     rejectButtion(obj) {
       this.$EventBus.$emit("rejectButton", obj);
     },
     sendReject(index) {
-      var rejectParams = new URLSearchParams();
+      let rejectParams = new URLSearchParams();
       rejectParams.append("session", this.getSession());
       rejectParams.append("rent_index", index);
 
-      axios
-        .post("https://api.devx.kr/GotGan/v1/rent_delete.php", rejectParams)
-        .then((response) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/rent_delete.php",
+        rejectParams,
+        (res) => {
           this.getRentRequest();
           this.$EventBus.$emit("updateRentStatusTable");
           this.$EventBus.$emit("updateSideBarBadge");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
   },
 };

@@ -50,7 +50,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosPost from "../../globalFunction.js";
+
 export default {
   name: "rent-status-table",
   props: {
@@ -86,39 +87,39 @@ export default {
       let rentParams = new URLSearchParams();
       rentParams.append("session", this.getSession());
 
-      axios
-        .post("https://api.devx.kr/GotGan/v1/rent_list.php", rentParams)
-        .then((response) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/rent_list.php",
+        rentParams,
+        (res) => {
           this.rentStatusNum = 0;
           this.rentList = [];
 
-          response.data.rents
+          res.data.rents
             .filter((el) => el.rent_status == 2)
             .forEach((el) => {
               this.rentList.push(el);
               this.rentStatusNum++;
             });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     returnButton(obj) {
       this.$EventBus.$emit("returnButton", obj);
     },
     sendReturn(index) {
-      var returnParams = new URLSearchParams();
+      let returnParams = new URLSearchParams();
       returnParams.append("session", this.getSession());
       returnParams.append("rent_index", index);
 
-      axios
-        .post("https://api.devx.kr/GotGan/v1/rent_return.php", returnParams)
-        .then((response) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/rent_return.php",
+        returnParams,
+        (res) => {
           this.exportData();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
   },
 };

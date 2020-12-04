@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosPost from "../../globalFunction.js";
 
 export default {
   name: "stock-table",
@@ -70,19 +70,16 @@ export default {
       let productParams = new URLSearchParams();
       productParams.append("session", this.getSession());
 
-      axios
-        .post(
-          "https://api.devx.kr/GotGan/v1/product_overview.php",
-          productParams
-        )
-        .then((response) => {
-          response.data.groups.forEach((el) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/product_overview.php",
+        productParams,
+        (res) => {
+          res.data.groups.forEach((el) => {
             this.productGroup.push(el);
           });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     getSession() {
       return sessionStorage.getItem("session");

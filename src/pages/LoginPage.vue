@@ -118,7 +118,7 @@
 
 <script>
 import router from "../main.js";
-import axios from "axios";
+import axiosPost from "../globalFunction.js";
 
 export default {
   data() {
@@ -152,24 +152,25 @@ export default {
       }
     },
     signIn(signInParams) {
-      axios
-        .post("https://api.devx.kr/GotGan/v1/login.php", signInParams)
-        .then((response) => {
-          this.$emit("child", response.data);
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/login.php",
+        signInParams,
+        (res) => {
+          console.log(res);
+          this.$emit("child", res.data);
 
-          if (response.data.result == 0) {
-            sessionStorage.setItem("session", response.data.session);
+          if (res.data.result == 0) {
+            sessionStorage.setItem("session", res.data.session);
 
             router.push(
-              response.data.user_level == 2 ? "/admin/stockdashboard" : "/user"
+              res.data.user_level == 2 ? "/admin/stockdashboard" : "/user"
             );
           } else {
             alert("입력된 정보가 잘못되었습니다.");
           }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     signUp() {
       let signUpParams = new URLSearchParams();
@@ -182,14 +183,14 @@ export default {
       signUpParams.append("user_group", this.userGroup);
       signUpParams.append("user_sid", this.userSID);
 
-      axios
-        .post("https://api.devx.kr/GotGan/v1/login.php", signUpParams)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/login.php",
+        signUpParams,
+        (res) => {
+          alert("회원가입이 완료되었습니다.");
+        },
+        null
+      );
     },
     getSession() {
       return sessionStorage.getItem("session");

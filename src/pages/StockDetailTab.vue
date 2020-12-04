@@ -369,8 +369,7 @@
 </template>
 
 <script>
-import axios from "axios";
-
+import axiosPost from "../globalFunction.js";
 import { StockDetailTable } from "@/components/";
 
 export default {
@@ -410,16 +409,16 @@ export default {
       return sessionStorage.getItem("session");
     },
     getProductData(param) {
-      axios
-        .post("https://api.devx.kr/GotGan/v1/product_overview.php", param)
-        .then((response) => {
-          response.data.groups.forEach((el) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/product_overview.php",
+        param,
+        (res) => {
+          res.data.groups.forEach((el) => {
             this.productGroups.push(el);
           });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     getUserData(param) {
       axios
@@ -434,32 +433,32 @@ export default {
         });
     },
     sendGroupAddData(param, product) {
-      axios
-        .post("https://api.devx.kr/GotGan/v1/product_group_add.php", param)
-        .then((response) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/product_group_add.php",
+        param,
+        (res) => {
           if (product != 0) {
-            product.product_group = response.data.product_group_index;
+            product.product_group = res.data.product_group_index;
             let addProductParams = new URLSearchParams();
             addProductParams.append("session", this.getSession());
             addProductParams.append("products", JSON.stringify([product]));
 
             this.sendProductAddData(addProductParams);
           }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        },
+        null
+      );
     },
     sendProductAddData(param) {
-      axios
-        .post("https://api.devx.kr/GotGan/v1/product_add.php", param)
-        .then((response) => {
+      axiosPost(
+        "https://api.devx.kr/GotGan/v2/product_add.php",
+        param,
+        (res) => {
           location.reload();
-          alert("상품 등록이 완료되었습니다.")
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+          alert("상품 등록이 완료되었습니다.");
+        },
+        null
+      );
     },
     onClickaddProductButton() {
       let addGroupParams = new URLSearchParams();
